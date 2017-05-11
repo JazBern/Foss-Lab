@@ -14,7 +14,7 @@ Linux Basic Commands and Directory Operations
 3. pwd 				# Gives the present Working directory
 4. ls 				# List all files in the current directory
 5. ls 				# Lists the files in the current directory
-6. ls -l 			# Prevides a long listing of all the files
+6. ls -l 			# Provides a long listing of all the files
 7. ls -l -h 			# Same as the above command but the file sizes will be in human readable form
 8. ls -F 			# Marks all the executable with a * and all the directories with a /
 9. ls --color 			# Shows a coloured listing of all the files
@@ -23,11 +23,11 @@ Linux Basic Commands and Directory Operations
 12.cd .. 			# Changes the directory to the parent directory of the current directory
 13.cd ~ 			# Changes the directory to the home directory of the current user
 14.cd / 			# Changes the directory to the root directory of the current user
-15.cd ~<username>		# Changes the directory to the home sirectory of a different user
+15.cd ~<username>		# Changes the directory to the home directory of a different user
 16.cat <filename> 		# Displays the text scroll off the screen
 17.cat <file1> <file2> 		# Concatenates the contents of the two text files
-18.more <filename> 		# Displays the file one scornful at a time
-19.less <filename> 		# Similat but faster than the more command
+18.more <filename> f		# Displays the file one scornful at a time
+19.less <filename> 		# Similar but faster than the more command
 20.cp <file1> <file2> 		# Copies file 1 to file 2
 21.cp <file1> <dirname> 	# Copies file1 to Directory <dirname>
 22.cp -r <dirname1> <dirname2> 	# Copies dirname1 directory to directory dirname2
@@ -57,9 +57,10 @@ Basic Outline of Directories in a typical Linux System
 10./boot	# Boot Loader Files
 11./lib		# System Libs
 12./opt		# Optional Add ons
-13./mnt		# Mount directory
+13./mnt		# Mount directory,Mounting is the act of associating a storage device
+		 to a particular location in the directory tree. 
 14./media	# Removable devices
-15./srv		# Service Data
+15./srv		# Service Data, Contains server specific services related data.
 
 Executing a Bash Script
 ------------------------

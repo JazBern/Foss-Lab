@@ -17,29 +17,46 @@ do
 		echo "4./"
 		echo "5.%"
 		read e
-		if [ "$e" -eq 1 ]
-		then
-			c=$(expr "$a" + "$b")
-			echo "Sum: $c"
-		elif [ "$e" -eq 2 ] 
-		then
-			c=$(expr "$a" - "$b")
-			echo "Difference: $c" 
-		elif [ "$e" -eq 3 ]
-		then
-			c=$(expr "$a" \* "$b")
-			echo "Product: $c"
-		elif [ "$e" -eq 4 ]
-		then
-			c=$(expr "$a" / "$b")
-			echo "Quotient: $c"
-		elif [ "$e" -eq 5 ]
-		then
-			c=$(expr "$a" % "$b")
-			echo "Remainder: $c"
-		else
-			echo "Invalid operation selected"
-		fi
+		# if [ "$e" -eq 1 ]
+		# then
+		# 	c=$(expr "$a" + "$b")
+		# 	echo "Sum: $c"
+		# elif [ "$e" -eq 2 ] 
+		# then
+		# 	c=$(expr "$a" - "$b")
+		# 	echo "Difference: $c" 
+		# elif [ "$e" -eq 3 ]
+		# then
+		# 	c=$(expr "$a" \* "$b")
+		# 	echo "Product: $c"
+		# elif [ "$e" -eq 4 ]
+		# then
+		# 	c=$(expr "$a" / "$b")
+		# 	echo "Quotient: $c"
+		# elif [ "$e" -eq 5 ]
+		# then
+		# 	c=$(expr "$a" % "$b")
+		# 	echo "Remainder: $c"
+		# else
+		# 	echo "Invalid operation selected"
+		# fi
+		case "$e" in
+   			1) c=$(expr "$a" + "$b")
+			   echo "Sum: $c"
+   			;;
+   			2) c=$(expr "$a" - "$b")
+			   echo "Difference: $c"
+   			;;
+   			3) c=$(expr "$a" \* "$b")
+			   echo "Product: $c"
+  			 ;;
+  			4) c=$(expr "$a" / "$b")
+			   echo "Quotient: $c"
+  			 ;;
+  			5) c=$(expr "$a" % "$b")
+			   echo "Rem: $c"
+  			 ;;
+		esac
 		echo "Press 0 to continue"
 		echo "Press 1 to exit"
 		read x

@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<head>
+<title>About this server</title>
+</head>
+<body>
+<h1>About this server</h1>
+Some <a href="http://www.acc.umu.se/technical/statistics/">statistics</a>, 
+<a href="http://www.acc.umu.se/technical/statistics/ftp/monitordata/index.html">bandwidth graphs</a> and <a href="http://www.acc.umu.se/technical/statistics/loadstats/ftp.html">Load graphs for all FTP machines</a>.
+
+<h3>Overview</h3>
+This server is a cluster of three kinds of machines:
+<dl>
+<dt>Backends<dd>Reliable large storage that is NFS-mounted to all the frontends
+and offloaders, NAS-style.
+<dt>Frontends<dd>The machines behind the DNS names, handles ftp, rsync and most
+http requests, but passes http requests for large files on to offloaders.
+<dt>Offloaders<dd>Serves http requests for large files, distribution
+cd/dvd-images, movies etc.
+</dl>
+
+<h3>Disk Backends</h3>
+<!-- OLD hardware
+The current disk backends are a NetAPP FAS270 called <a
+href="http://www.acc.umu.se/technical/hosts/host/ignalina.html">ignalina</a>
+and a Sun Blade 1000 with 14x300 GB disk called <a
+href="http://www.acc.umu.se/technical/hosts/host/unterweser.html">unterweser</a>.
+<p>
+Total usable space is about 3TiB.
+The current disk backend is a Supermicro Opteron server called <a
+href="http://www.acc.umu.se/technical/hosts/host/neckarwestheim.html">neckarwestheim</a>.
+The current disk backend is a HP DL585 G2 server called <a
+href="http://www.acc.umu.se/technical/hosts/host/grosswelzheim.html">grosswelzheim</a>.
+The current disk backend is a HP DL380 G5 server called <a
+href="http://www.acc.umu.se/technical/hosts/host/essenbach.html">essenbach</a>.
+<p>
+<p>
+-->
+The current disk backend is a HP DL180 G6 server called <a
+href="http://www.acc.umu.se/technical/hosts/host/brokdorf.html">brokdorf</a>.
+<p>
+Total usable space is about 120TiB.
+
+<h3>Frontends</h3>
+
+We are using caching frontends to be able to deliver high bandwidth
+without having to have a disk backend that can handle the aggregated
+output. The cache used is mod_cache_disk_largefile, our modified version of the
+mod_cache_disk (previously mod_disk_cache) available in Apache HTTP Server. An
+XFS filesystem over striped SAS 10k/15kRPM disks is used as local storage.
+<br>
+<img src="/about/smallcachedfile.png"><img src="/about/smalluncachedfile.png">
+<p>
+For certain file endings (like .iso) we use http redirects to send these off
+to one of the offloaders. The choice of which offloader to redirect to is
+done by a perl program and is cached in apache as a dbm-cached rewrite rule.
+To keep cache size reasonably low a certain URL is always redirected to the
+same offloader.
+<br>
+<img src="/about/largefile.png">
+<p>
+The visible frontends are:
+<ul>
+<li><a href="http://www.acc.umu.se/technical/hosts/host/hammurabi.html">hammurabi</a> - <a href="http://www.acc.umu.se/technical/statistics/loadstats/index.html?host=hammurabi">load graph</a>
+<li><a href="http://www.acc.umu.se/technical/hosts/host/napoleon.html">napoleon</a> - <a href="http://www.acc.umu.se/technical/statistics/loadstats/index.html?host=napoleon">load graph</a>
+</ul>
+<h3>Offloaders</h3>
+The offloaders work just as the frontends caching data locally, but they only
+handle a few large files. The majority of data is usually sent by the
+offloaders and cache re-use is high.
+<p>
+As a precaution against nosey users, the offloaders redirect directory indexes
+back to the main frontends. And as a precaution against stupid download agents
+we limit the max connections per IP to 10, and we always deliver data from
+cache if the data is cached, even if the user agent sends "Cache-control: no
+cache" or similar.
+<p>
+The current offloaders are:
+<ul>
+<li><a href="http://www.acc.umu.se/technical/hosts/host/caesar.html">caesar</a> - <a href="http://www.acc.umu.se/technical/statistics/loadstats/index.html?host=caesar">load graph</a>
+<li><a href="http://www.acc.umu.se/technical/hosts/host/gemmei.html">gemmei</a> - <a href="http://www.acc.umu.se/technical/statistics/loadstats/index.html?host=gemmei">load graph</a>
+<li><a href="http://www.acc.umu.se/technical/hosts/host/gensho.html">gensho</a> - <a href="http://www.acc.umu.se/technical/statistics/loadstats/index.html?host=gensho">load graph</a>
+<li><a href="http://www.acc.umu.se/technical/hosts/host/saimei.html">saimei</a> - <a href="http://www.acc.umu.se/technical/statistics/loadstats/index.html?host=saimei">load graph</a>
+</ul>
+<h3>Network</h3>
+
+All machines are connected with 10 gigabit ethernet, aggregated external
+bandwidth available is 20 gigabit/s.
+<p>
+Current and historical <a href="http://www.acc.umu.se/technical/statistics/ftp/monitordata/index.html">bandwidth graphs</a> for the frontends.
+
+
+<h3>Names</h3>
+The server is known by many names. Among them:
+<ul>
+<li>ftp.acc.umu.se
+<li><a href="ftp.sunet.se-history_sv.html">ftp.sunet.se</a>
+<li>ftp.se.debian.org
+<li>ftp.gnome.org
+<li>se.releases.ubuntu.com
+<li>se.archive.ubuntu.com
+<li>cdimage.debian.org
+</ul>
+
+<h3>Contact</h3>
+If you have any questions please contact ftp-adm@acc.umu.se, and we will do our best to help you.
+
+<h3>More information</h3>
+
+<ul>
+<li><a href="http://urn.kb.se/resolve?urn=urn:nbn:se:umu:diva-109779">Scaling a Content Delivery system for Open Source Software</a> - Master thesis written on the caching structure of the archive.
+<li><a href="http://www.acc.umu.se/~maswan/2005-12-10/2gbit-freesoftware.html">Delivering free software at 2Gbit/s</a> - A summary on how we managed to saturate
+our available bandwidth on a previous setup
+</ul>
+
+<h3>Previous setups</h3>
+
+<ul>
+<li><a href="/about/ftp-about-SPmkII.html">IBM SP, GPFS, Silver nodes with Thin nodes as backends</a>
+</ul>
+
+</body>

@@ -1,17 +1,16 @@
-[amrith@localhost Expt_6]$ ./addnames.sh classlist amrith
-The New Classlist File is : 
-anand
-chandran
-amrith
-[amrith@localhost Expt_6]$ ./addnames.sh classlist 
-Enter Correct Number of Arguments : ./addnames.sh <classlist> <username>
-[amrith@localhost Expt_6]$ ./addnames.sh classfile amrith
-File Not Found
-[amrith@localhost Expt_6]$ ./addnames.sh classlist adu
-The New Classlist File is : 
-anand
-chandran
-amrith
-adu
 
-	
+
+
+ 1.$#
+
+  	The number of arguments supplied to a script.	
+ 2.$0
+
+  	The filename of the current script.
+ 3.$n
+
+	These variables correspond to the arguments with which a script was invoked. Here n is a positive 	decimal number corresponding to the position of an argument (the first argument is $1, the second 	argument is $2, and so on).
+
+ 4.	Any arguments appear as "$1", "$2", "$3" and so on
+ 5.-eq 	
+	Checks if the value of two operands are equal or not; if yes, then the condition becomes true. 		[ $a -eq $b ] is not true when a=10 & b=20.

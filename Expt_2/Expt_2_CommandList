@@ -12,7 +12,7 @@ File System Hierarchy
 Redirection
 ------------
 1. command > filename 	# Redirects output to file and overwrites previous content
-2. command >> file name # Redirects ouput to end of file
+2. command >> file name # Redirects output to end of file
 3. sort < filename 	# Sorts content inside file 
 
 Pipes

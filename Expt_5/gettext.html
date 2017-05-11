@@ -1,0 +1,2452 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 6.0, http://www.gnu.org/software/texinfo/ -->
+<head>
+<title>GNU gettext utilities</title>
+
+<meta name="description" content="GNU gettext utilities">
+<meta name="keywords" content="GNU gettext utilities">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="#Top" rel="start" title="Top">
+<link href="#Program-Index" rel="index" title="Program Index">
+<link href="#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="dir.html#Top" rel="up" title="(dir)">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nocodebreak {white-space: nowrap}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: serif; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+<link rel="stylesheet" type="text/css" href="/software/gnulib/manual.css">
+
+
+</head>
+
+<body lang="en">
+<h1 class="settitle" align="center">GNU <code>gettext</code> utilities</h1>
+
+
+
+
+
+<a name="SEC_Contents"></a>
+<h2 class="contents-heading">Table of Contents</h2>
+
+<div class="contents">
+
+<ul class="no-bullet">
+  <li><a name="toc-Introduction-1" href="#Introduction">1 Introduction</a>
+  <ul class="no-bullet">
+    <li><a name="toc-The-Purpose-of-GNU-gettext" href="#Why">1.1 The Purpose of GNU <code>gettext</code></a></li>
+    <li><a name="toc-I18n_002c-L10n_002c-and-Such" href="#Concepts">1.2 I18n, L10n, and Such</a></li>
+    <li><a name="toc-Aspects-in-Native-Language-Support" href="#Aspects">1.3 Aspects in Native Language Support</a></li>
+    <li><a name="toc-Files-Conveying-Translations" href="#Files">1.4 Files Conveying Translations</a></li>
+    <li><a name="toc-Overview-of-GNU-gettext" href="#Overview">1.5 Overview of GNU <code>gettext</code></a></li>
+  </ul></li>
+  <li><a name="toc-The-User_0027s-View" href="#Users">2 The User&rsquo;s View</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Operating-System-Installation" href="#System-Installation">2.1 Operating System Installation</a></li>
+    <li><a name="toc-Setting-the-Locale-Used-by-GUI-Programs" href="#Setting-the-GUI-Locale">2.2 Setting the Locale Used by GUI Programs</a></li>
+    <li><a name="toc-Setting-the-Locale-through-Environment-Variables" href="#Setting-the-POSIX-Locale">2.3 Setting the Locale through Environment Variables</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Locale-Names-1" href="#Locale-Names">2.3.1 Locale Names</a></li>
+      <li><a name="toc-Locale-Environment-Variables-1" href="#Locale-Environment-Variables">2.3.2 Locale Environment Variables</a></li>
+      <li><a name="toc-Specifying-a-Priority-List-of-Languages" href="#The-LANGUAGE-variable">2.3.3 Specifying a Priority List of Languages</a></li>
+    </ul></li>
+    <li><a name="toc-Installing-Translations-for-Particular-Programs" href="#Installing-Localizations">2.4 Installing Translations for Particular Programs</a></li>
+  </ul></li>
+  <li><a name="toc-The-Format-of-PO-Files" href="#PO-Files">3 The Format of PO Files</a></li>
+  <li><a name="toc-Preparing-Program-Sources" href="#Sources">4 Preparing Program Sources</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Importing-the-gettext-declaration" href="#Importing">4.1 Importing the <code>gettext</code> declaration</a></li>
+    <li><a name="toc-Triggering-gettext-Operations" href="#Triggering">4.2 Triggering <code>gettext</code> Operations</a></li>
+    <li><a name="toc-Preparing-Translatable-Strings" href="#Preparing-Strings">4.3 Preparing Translatable Strings</a></li>
+    <li><a name="toc-How-Marks-Appear-in-Sources" href="#Mark-Keywords">4.4 How Marks Appear in Sources</a></li>
+    <li><a name="toc-Marking-Translatable-Strings" href="#Marking">4.5 Marking Translatable Strings</a></li>
+    <li><a name="toc-Special-Comments-preceding-Keywords" href="#c_002dformat-Flag">4.6 Special Comments preceding Keywords</a></li>
+    <li><a name="toc-Special-Cases-of-Translatable-Strings" href="#Special-cases">4.7 Special Cases of Translatable Strings</a></li>
+    <li><a name="toc-Letting-Users-Report-Translation-Bugs" href="#Bug-Report-Address">4.8 Letting Users Report Translation Bugs</a></li>
+    <li><a name="toc-Marking-Proper-Names-for-Translation" href="#Names">4.9 Marking Proper Names for Translation</a></li>
+    <li><a name="toc-Preparing-Library-Sources" href="#Libraries">4.10 Preparing Library Sources</a></li>
+  </ul></li>
+  <li><a name="toc-Making-the-PO-Template-File" href="#Template">5 Making the PO Template File</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Invoking-the-xgettext-Program" href="#xgettext-Invocation">5.1 Invoking the <code>xgettext</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location" href="#Input-file-location">5.1.1 Input file location</a></li>
+      <li><a name="toc-Output-file-location" href="#Output-file-location">5.1.2 Output file location</a></li>
+      <li><a name="toc-Choice-of-input-file-language" href="#Choice-of-input-file-language">5.1.3 Choice of input file language</a></li>
+      <li><a name="toc-Input-file-interpretation" href="#Input-file-interpretation">5.1.4 Input file interpretation</a></li>
+      <li><a name="toc-Operation-mode" href="#Operation-mode">5.1.5 Operation mode</a></li>
+      <li><a name="toc-Language-specific-options" href="#Language-specific-options">5.1.6 Language specific options</a></li>
+      <li><a name="toc-Output-details" href="#Output-details">5.1.7 Output details</a></li>
+      <li><a name="toc-Informative-output" href="#Informative-output">5.1.8 Informative output</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Creating-a-New-PO-File" href="#Creating">6 Creating a New PO File</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Invoking-the-msginit-Program" href="#msginit-Invocation">6.1 Invoking the <code>msginit</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-1" href="#Input-file-location-1">6.1.1 Input file location</a></li>
+      <li><a name="toc-Output-file-location-1" href="#Output-file-location-1">6.1.2 Output file location</a></li>
+      <li><a name="toc-Input-file-syntax" href="#Input-file-syntax">6.1.3 Input file syntax</a></li>
+      <li><a name="toc-Output-details-1" href="#Output-details-1">6.1.4 Output details</a></li>
+      <li><a name="toc-Informative-output-1" href="#Informative-output-1">6.1.5 Informative output</a></li>
+    </ul></li>
+    <li><a name="toc-Filling-in-the-Header-Entry" href="#Header-Entry">6.2 Filling in the Header Entry</a></li>
+  </ul></li>
+  <li><a name="toc-Updating-Existing-PO-Files" href="#Updating">7 Updating Existing PO Files</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Invoking-the-msgmerge-Program" href="#msgmerge-Invocation">7.1 Invoking the <code>msgmerge</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-2" href="#Input-file-location-2">7.1.1 Input file location</a></li>
+      <li><a name="toc-Operation-mode-1" href="#Operation-mode-1">7.1.2 Operation mode</a></li>
+      <li><a name="toc-Output-file-location-2" href="#Output-file-location-2">7.1.3 Output file location</a></li>
+      <li><a name="toc-Output-file-location-in-update-mode" href="#Output-file-location-in-update-mode">7.1.4 Output file location in update mode</a></li>
+      <li><a name="toc-Operation-modifiers" href="#Operation-modifiers">7.1.5 Operation modifiers</a></li>
+      <li><a name="toc-Input-file-syntax-1" href="#Input-file-syntax-1">7.1.6 Input file syntax</a></li>
+      <li><a name="toc-Output-details-2" href="#Output-details-2">7.1.7 Output details</a></li>
+      <li><a name="toc-Informative-output-2" href="#Informative-output-2">7.1.8 Informative output</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Editing-PO-Files" href="#Editing">8 Editing PO Files</a>
+  <ul class="no-bullet">
+    <li><a name="toc-KDE_0027s-PO-File-Editor" href="#KBabel">8.1 KDE&rsquo;s PO File Editor</a></li>
+    <li><a name="toc-GNOME_0027s-PO-File-Editor" href="#Gtranslator">8.2 GNOME&rsquo;s PO File Editor</a></li>
+    <li><a name="toc-Emacs_0027s-PO-File-Editor" href="#PO-Mode">8.3 Emacs&rsquo;s PO File Editor</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Completing-GNU-gettext-Installation" href="#Installation">8.3.1 Completing GNU <code>gettext</code> Installation</a></li>
+      <li><a name="toc-Main-PO-mode-Commands" href="#Main-PO-Commands">8.3.2 Main PO mode Commands</a></li>
+      <li><a name="toc-Entry-Positioning-1" href="#Entry-Positioning">8.3.3 Entry Positioning</a></li>
+      <li><a name="toc-Normalizing-Strings-in-Entries" href="#Normalizing">8.3.4 Normalizing Strings in Entries</a></li>
+      <li><a name="toc-Translated-Entries-1" href="#Translated-Entries">8.3.5 Translated Entries</a></li>
+      <li><a name="toc-Fuzzy-Entries-1" href="#Fuzzy-Entries">8.3.6 Fuzzy Entries</a></li>
+      <li><a name="toc-Untranslated-Entries-1" href="#Untranslated-Entries">8.3.7 Untranslated Entries</a></li>
+      <li><a name="toc-Obsolete-Entries-1" href="#Obsolete-Entries">8.3.8 Obsolete Entries</a></li>
+      <li><a name="toc-Modifying-Translations-1" href="#Modifying-Translations">8.3.9 Modifying Translations</a></li>
+      <li><a name="toc-Modifying-Comments-1" href="#Modifying-Comments">8.3.10 Modifying Comments</a></li>
+      <li><a name="toc-Details-of-Sub-Edition" href="#Subedit">8.3.11 Details of Sub Edition</a></li>
+      <li><a name="toc-C-Sources-Context-1" href="#C-Sources-Context">8.3.12 C Sources Context</a></li>
+      <li><a name="toc-Consulting-Auxiliary-PO-Files" href="#Auxiliary">8.3.13 Consulting Auxiliary PO Files</a></li>
+    </ul></li>
+    <li><a name="toc-Using-Translation-Compendia" href="#Compendium">8.4 Using Translation Compendia</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Creating-Compendia-1" href="#Creating-Compendia">8.4.1 Creating Compendia</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Concatenate-PO-Files" href="#Concatenate-PO-Files">8.4.1.1 Concatenate PO Files</a></li>
+        <li><a name="toc-Extract-a-Message-Subset-from-a-PO-File" href="#Extract-a-Message-Subset-from-a-PO-File">8.4.1.2 Extract a Message Subset from a PO File</a></li>
+      </ul></li>
+      <li><a name="toc-Using-Compendia-1" href="#Using-Compendia">8.4.2 Using Compendia</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Initialize-a-New-Translation-File" href="#Initialize-a-New-Translation-File">8.4.2.1 Initialize a New Translation File</a></li>
+        <li><a name="toc-Update-an-Existing-Translation-File" href="#Update-an-Existing-Translation-File">8.4.2.2 Update an Existing Translation File</a></li>
+      </ul></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Manipulating-PO-Files" href="#Manipulating">9 Manipulating PO Files</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Invoking-the-msgcat-Program" href="#msgcat-Invocation">9.1 Invoking the <code>msgcat</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-3" href="#Input-file-location-3">9.1.1 Input file location</a></li>
+      <li><a name="toc-Output-file-location-3" href="#Output-file-location-3">9.1.2 Output file location</a></li>
+      <li><a name="toc-Message-selection" href="#Message-selection">9.1.3 Message selection</a></li>
+      <li><a name="toc-Input-file-syntax-2" href="#Input-file-syntax-2">9.1.4 Input file syntax</a></li>
+      <li><a name="toc-Output-details-3" href="#Output-details-3">9.1.5 Output details</a></li>
+      <li><a name="toc-Informative-output-3" href="#Informative-output-3">9.1.6 Informative output</a></li>
+    </ul></li>
+    <li><a name="toc-Invoking-the-msgconv-Program" href="#msgconv-Invocation">9.2 Invoking the <code>msgconv</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-4" href="#Input-file-location-4">9.2.1 Input file location</a></li>
+      <li><a name="toc-Output-file-location-4" href="#Output-file-location-4">9.2.2 Output file location</a></li>
+      <li><a name="toc-Conversion-target" href="#Conversion-target">9.2.3 Conversion target</a></li>
+      <li><a name="toc-Input-file-syntax-3" href="#Input-file-syntax-3">9.2.4 Input file syntax</a></li>
+      <li><a name="toc-Output-details-4" href="#Output-details-4">9.2.5 Output details</a></li>
+      <li><a name="toc-Informative-output-4" href="#Informative-output-4">9.2.6 Informative output</a></li>
+    </ul></li>
+    <li><a name="toc-Invoking-the-msggrep-Program" href="#msggrep-Invocation">9.3 Invoking the <code>msggrep</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-5" href="#Input-file-location-5">9.3.1 Input file location</a></li>
+      <li><a name="toc-Output-file-location-5" href="#Output-file-location-5">9.3.2 Output file location</a></li>
+      <li><a name="toc-Message-selection-1" href="#Message-selection-1">9.3.3 Message selection</a></li>
+      <li><a name="toc-Input-file-syntax-4" href="#Input-file-syntax-4">9.3.4 Input file syntax</a></li>
+      <li><a name="toc-Output-details-5" href="#Output-details-5">9.3.5 Output details</a></li>
+      <li><a name="toc-Informative-output-5" href="#Informative-output-5">9.3.6 Informative output</a></li>
+      <li><a name="toc-Examples" href="#Examples">9.3.7 Examples</a></li>
+    </ul></li>
+    <li><a name="toc-Invoking-the-msgfilter-Program" href="#msgfilter-Invocation">9.4 Invoking the <code>msgfilter</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-6" href="#Input-file-location-6">9.4.1 Input file location</a></li>
+      <li><a name="toc-Output-file-location-6" href="#Output-file-location-6">9.4.2 Output file location</a></li>
+      <li><a name="toc-The-filter" href="#The-filter">9.4.3 The filter</a></li>
+      <li><a name="toc-Useful-filter_002doptions-when-the-filter-is-sed" href="#Useful-filter_002doptions-when-the-filter-is-sed">9.4.4 Useful <var>filter-option</var>s when the <var>filter</var> is &lsquo;<samp>sed</samp>&rsquo;</a></li>
+      <li><a name="toc-Built_002din-filters" href="#Built_002din-filters">9.4.5 Built-in <var>filter</var>s</a></li>
+      <li><a name="toc-Input-file-syntax-5" href="#Input-file-syntax-5">9.4.6 Input file syntax</a></li>
+      <li><a name="toc-Output-details-6" href="#Output-details-6">9.4.7 Output details</a></li>
+      <li><a name="toc-Informative-output-6" href="#Informative-output-6">9.4.8 Informative output</a></li>
+      <li><a name="toc-Examples-1" href="#Examples-1">9.4.9 Examples</a></li>
+    </ul></li>
+    <li><a name="toc-Invoking-the-msguniq-Program" href="#msguniq-Invocation">9.5 Invoking the <code>msguniq</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-7" href="#Input-file-location-7">9.5.1 Input file location</a></li>
+      <li><a name="toc-Output-file-location-7" href="#Output-file-location-7">9.5.2 Output file location</a></li>
+      <li><a name="toc-Message-selection-2" href="#Message-selection-2">9.5.3 Message selection</a></li>
+      <li><a name="toc-Input-file-syntax-6" href="#Input-file-syntax-6">9.5.4 Input file syntax</a></li>
+      <li><a name="toc-Output-details-7" href="#Output-details-7">9.5.5 Output details</a></li>
+      <li><a name="toc-Informative-output-7" href="#Informative-output-7">9.5.6 Informative output</a></li>
+    </ul></li>
+    <li><a name="toc-Invoking-the-msgcomm-Program" href="#msgcomm-Invocation">9.6 Invoking the <code>msgcomm</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-8" href="#Input-file-location-8">9.6.1 Input file location</a></li>
+      <li><a name="toc-Output-file-location-8" href="#Output-file-location-8">9.6.2 Output file location</a></li>
+      <li><a name="toc-Message-selection-3" href="#Message-selection-3">9.6.3 Message selection</a></li>
+      <li><a name="toc-Input-file-syntax-7" href="#Input-file-syntax-7">9.6.4 Input file syntax</a></li>
+      <li><a name="toc-Output-details-8" href="#Output-details-8">9.6.5 Output details</a></li>
+      <li><a name="toc-Informative-output-8" href="#Informative-output-8">9.6.6 Informative output</a></li>
+    </ul></li>
+    <li><a name="toc-Invoking-the-msgcmp-Program" href="#msgcmp-Invocation">9.7 Invoking the <code>msgcmp</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-9" href="#Input-file-location-9">9.7.1 Input file location</a></li>
+      <li><a name="toc-Operation-modifiers-1" href="#Operation-modifiers-1">9.7.2 Operation modifiers</a></li>
+      <li><a name="toc-Input-file-syntax-8" href="#Input-file-syntax-8">9.7.3 Input file syntax</a></li>
+      <li><a name="toc-Informative-output-9" href="#Informative-output-9">9.7.4 Informative output</a></li>
+    </ul></li>
+    <li><a name="toc-Invoking-the-msgattrib-Program" href="#msgattrib-Invocation">9.8 Invoking the <code>msgattrib</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-10" href="#Input-file-location-10">9.8.1 Input file location</a></li>
+      <li><a name="toc-Output-file-location-9" href="#Output-file-location-9">9.8.2 Output file location</a></li>
+      <li><a name="toc-Message-selection-4" href="#Message-selection-4">9.8.3 Message selection</a></li>
+      <li><a name="toc-Attribute-manipulation" href="#Attribute-manipulation">9.8.4 Attribute manipulation</a></li>
+      <li><a name="toc-Input-file-syntax-9" href="#Input-file-syntax-9">9.8.5 Input file syntax</a></li>
+      <li><a name="toc-Output-details-9" href="#Output-details-9">9.8.6 Output details</a></li>
+      <li><a name="toc-Informative-output-10" href="#Informative-output-10">9.8.7 Informative output</a></li>
+    </ul></li>
+    <li><a name="toc-Invoking-the-msgen-Program" href="#msgen-Invocation">9.9 Invoking the <code>msgen</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-11" href="#Input-file-location-11">9.9.1 Input file location</a></li>
+      <li><a name="toc-Output-file-location-10" href="#Output-file-location-10">9.9.2 Output file location</a></li>
+      <li><a name="toc-Input-file-syntax-10" href="#Input-file-syntax-10">9.9.3 Input file syntax</a></li>
+      <li><a name="toc-Output-details-10" href="#Output-details-10">9.9.4 Output details</a></li>
+      <li><a name="toc-Informative-output-11" href="#Informative-output-11">9.9.5 Informative output</a></li>
+    </ul></li>
+    <li><a name="toc-Invoking-the-msgexec-Program" href="#msgexec-Invocation">9.10 Invoking the <code>msgexec</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-12" href="#Input-file-location-12">9.10.1 Input file location</a></li>
+      <li><a name="toc-Input-file-syntax-11" href="#Input-file-syntax-11">9.10.2 Input file syntax</a></li>
+      <li><a name="toc-Informative-output-12" href="#Informative-output-12">9.10.3 Informative output</a></li>
+    </ul></li>
+    <li><a name="toc-Highlighting-parts-of-PO-files" href="#Colorizing">9.11 Highlighting parts of PO files</a>
+    <ul class="no-bullet">
+      <li><a name="toc-The-_002d_002dcolor-option-1" href="#The-_002d_002dcolor-option">9.11.1 The <code>--color</code> option</a></li>
+      <li><a name="toc-The-environment-variable-TERM" href="#The-TERM-variable">9.11.2 The environment variable <code>TERM</code></a></li>
+      <li><a name="toc-The-_002d_002dstyle-option-1" href="#The-_002d_002dstyle-option">9.11.3 The <code>--style</code> option</a></li>
+      <li><a name="toc-Style-rules-for-PO-files" href="#Style-rules">9.11.4 Style rules for PO files</a></li>
+      <li><a name="toc-Customizing-less-for-viewing-PO-files" href="#Customizing-less">9.11.5 Customizing <code>less</code> for viewing PO files</a></li>
+    </ul></li>
+    <li><a name="toc-Writing-your-own-programs-that-process-PO-files" href="#libgettextpo">9.12 Writing your own programs that process PO files</a></li>
+  </ul></li>
+  <li><a name="toc-Producing-Binary-MO-Files" href="#Binaries">10 Producing Binary MO Files</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Invoking-the-msgfmt-Program" href="#msgfmt-Invocation">10.1 Invoking the <code>msgfmt</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Input-file-location-13" href="#Input-file-location-13">10.1.1 Input file location</a></li>
+      <li><a name="toc-Operation-mode-2" href="#Operation-mode-2">10.1.2 Operation mode</a></li>
+      <li><a name="toc-Output-file-location-11" href="#Output-file-location-11">10.1.3 Output file location</a></li>
+      <li><a name="toc-Output-file-location-in-Java-mode" href="#Output-file-location-in-Java-mode">10.1.4 Output file location in Java mode</a></li>
+      <li><a name="toc-Output-file-location-in-C_0023-mode" href="#Output-file-location-in-C_0023-mode">10.1.5 Output file location in C# mode</a></li>
+      <li><a name="toc-Output-file-location-in-Tcl-mode" href="#Output-file-location-in-Tcl-mode">10.1.6 Output file location in Tcl mode</a></li>
+      <li><a name="toc-Desktop-Entry-mode-operations" href="#Desktop-Entry-mode-operations">10.1.7 Desktop Entry mode operations</a></li>
+      <li><a name="toc-XML-mode-operations" href="#XML-mode-operations">10.1.8 XML mode operations</a></li>
+      <li><a name="toc-Input-file-syntax-12" href="#Input-file-syntax-12">10.1.9 Input file syntax</a></li>
+      <li><a name="toc-Input-file-interpretation-1" href="#Input-file-interpretation-1">10.1.10 Input file interpretation</a></li>
+      <li><a name="toc-Output-details-11" href="#Output-details-11">10.1.11 Output details</a></li>
+      <li><a name="toc-Informative-output-13" href="#Informative-output-13">10.1.12 Informative output</a></li>
+    </ul></li>
+    <li><a name="toc-Invoking-the-msgunfmt-Program" href="#msgunfmt-Invocation">10.2 Invoking the <code>msgunfmt</code> Program</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Operation-mode-3" href="#Operation-mode-3">10.2.1 Operation mode</a></li>
+      <li><a name="toc-Input-file-location-14" href="#Input-file-location-14">10.2.2 Input file location</a></li>
+      <li><a name="toc-Input-file-location-in-Java-mode" href="#Input-file-location-in-Java-mode">10.2.3 Input file location in Java mode</a></li>
+      <li><a name="toc-Input-file-location-in-C_0023-mode" href="#Input-file-location-in-C_0023-mode">10.2.4 Input file location in C# mode</a></li>
+      <li><a name="toc-Input-file-location-in-Tcl-mode" href="#Input-file-location-in-Tcl-mode">10.2.5 Input file location in Tcl mode</a></li>
+      <li><a name="toc-Output-file-location-12" href="#Output-file-location-12">10.2.6 Output file location</a></li>
+      <li><a name="toc-Output-details-12" href="#Output-details-12">10.2.7 Output details</a></li>
+      <li><a name="toc-Informative-output-14" href="#Informative-output-14">10.2.8 Informative output</a></li>
+    </ul></li>
+    <li><a name="toc-The-Format-of-GNU-MO-Files" href="#MO-Files">10.3 The Format of GNU MO Files</a></li>
+  </ul></li>
+  <li><a name="toc-The-Programmer_0027s-View" href="#Programmers">11 The Programmer&rsquo;s View</a>
+  <ul class="no-bullet">
+    <li><a name="toc-About-catgets" href="#catgets">11.1 About <code>catgets</code></a>
+    <ul class="no-bullet">
+      <li><a name="toc-The-Interface" href="#Interface-to-catgets">11.1.1 The Interface</a></li>
+      <li><a name="toc-Problems-with-the-catgets-Interface_003f_0021" href="#Problems-with-catgets">11.1.2 Problems with the <code>catgets</code> Interface?!</a></li>
+    </ul></li>
+    <li><a name="toc-About-gettext" href="#gettext">11.2 About <code>gettext</code></a>
+    <ul class="no-bullet">
+      <li><a name="toc-The-Interface-1" href="#Interface-to-gettext">11.2.1 The Interface</a></li>
+      <li><a name="toc-Solving-Ambiguities" href="#Ambiguities">11.2.2 Solving Ambiguities</a></li>
+      <li><a name="toc-Locating-Message-Catalog-Files" href="#Locating-Catalogs">11.2.3 Locating Message Catalog Files</a></li>
+      <li><a name="toc-How-to-specify-the-output-character-set-gettext-uses" href="#Charset-conversion">11.2.4 How to specify the output character set <code>gettext</code> uses</a></li>
+      <li><a name="toc-Using-contexts-for-solving-ambiguities" href="#Contexts">11.2.5 Using contexts for solving ambiguities</a></li>
+      <li><a name="toc-Additional-functions-for-plural-forms" href="#Plural-forms">11.2.6 Additional functions for plural forms</a></li>
+      <li><a name="toc-Optimization-of-the-_002agettext-functions" href="#Optimized-gettext">11.2.7 Optimization of the *gettext functions</a></li>
+    </ul></li>
+    <li><a name="toc-Comparing-the-Two-Interfaces" href="#Comparison">11.3 Comparing the Two Interfaces</a></li>
+    <li><a name="toc-Using-libintl_002ea-in-own-programs" href="#Using-libintl_002ea">11.4 Using libintl.a in own programs</a></li>
+    <li><a name="toc-Being-a-gettext-grok" href="#gettext-grok">11.5 Being a <code>gettext</code> grok</a></li>
+    <li><a name="toc-Temporary-Notes-for-the-Programmers-Chapter" href="#Temp-Programmers">11.6 Temporary Notes for the Programmers Chapter</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Temporary-_002d-Two-Possible-Implementations" href="#Temp-Implementations">11.6.1 Temporary - Two Possible Implementations</a></li>
+      <li><a name="toc-Temporary-_002d-About-catgets" href="#Temp-catgets">11.6.2 Temporary - About <code>catgets</code></a></li>
+      <li><a name="toc-Temporary-_002d-Why-a-single-implementation" href="#Temp-WSI">11.6.3 Temporary - Why a single implementation</a></li>
+      <li><a name="toc-Temporary-_002d-Notes" href="#Temp-Notes">11.6.4 Temporary - Notes</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-The-Translator_0027s-View" href="#Translators">12 The Translator&rsquo;s View</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Introduction-0" href="#Trans-Intro-0">12.1 Introduction 0</a></li>
+    <li><a name="toc-Introduction-1-1" href="#Trans-Intro-1">12.2 Introduction 1</a></li>
+    <li><a name="toc-Discussions-1" href="#Discussions">12.3 Discussions</a></li>
+    <li><a name="toc-Organization-1" href="#Organization">12.4 Organization</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Central-Coordination-1" href="#Central-Coordination">12.4.1 Central Coordination</a></li>
+      <li><a name="toc-National-Teams-1" href="#National-Teams">12.4.2 National Teams</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Sub_002dCultures-1" href="#Sub_002dCultures">12.4.2.1 Sub-Cultures</a></li>
+        <li><a name="toc-Organizational-Ideas-1" href="#Organizational-Ideas">12.4.2.2 Organizational Ideas</a></li>
+      </ul></li>
+      <li><a name="toc-Mailing-Lists-1" href="#Mailing-Lists">12.4.3 Mailing Lists</a></li>
+    </ul></li>
+    <li><a name="toc-Information-Flow-1" href="#Information-Flow">12.5 Information Flow</a></li>
+    <li><a name="toc-Translating-plural-forms-1" href="#Translating-plural-forms">12.6 Translating plural forms</a></li>
+    <li><a name="toc-Prioritizing-messages_003a-How-to-determine-which-messages-to-translate-first" href="#Prioritizing-messages">12.7 Prioritizing messages: How to determine which messages to translate first</a></li>
+  </ul></li>
+  <li><a name="toc-The-Maintainer_0027s-View" href="#Maintainers">13 The Maintainer&rsquo;s View</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Flat-or-Non_002dFlat-Directory-Structures" href="#Flat-and-Non_002dFlat">13.1 Flat or Non-Flat Directory Structures</a></li>
+    <li><a name="toc-Prerequisite-Works" href="#Prerequisites">13.2 Prerequisite Works</a></li>
+    <li><a name="toc-Invoking-the-gettextize-Program" href="#gettextize-Invocation">13.3 Invoking the <code>gettextize</code> Program</a></li>
+    <li><a name="toc-Files-You-Must-Create-or-Alter" href="#Adjusting-Files">13.4 Files You Must Create or Alter</a>
+    <ul class="no-bullet">
+      <li><a name="toc-POTFILES_002ein-in-po_002f" href="#po_002fPOTFILES_002ein">13.4.1 <samp>POTFILES.in</samp> in <samp>po/</samp></a></li>
+      <li><a name="toc-LINGUAS-in-po_002f" href="#po_002fLINGUAS">13.4.2 <samp>LINGUAS</samp> in <samp>po/</samp></a></li>
+      <li><a name="toc-Makevars-in-po_002f" href="#po_002fMakevars">13.4.3 <samp>Makevars</samp> in <samp>po/</samp></a></li>
+      <li><a name="toc-Extending-Makefile-in-po_002f" href="#po_002fRules_002d_002a">13.4.4 Extending <samp>Makefile</samp> in <samp>po/</samp></a></li>
+      <li><a name="toc-configure_002eac-at-top-level" href="#configure_002eac">13.4.5 <samp>configure.ac</samp> at top level</a></li>
+      <li><a name="toc-config_002eguess_002c-config_002esub-at-top-level" href="#config_002eguess">13.4.6 <samp>config.guess</samp>, <samp>config.sub</samp> at top level</a></li>
+      <li><a name="toc-mkinstalldirs-at-top-level" href="#mkinstalldirs">13.4.7 <samp>mkinstalldirs</samp> at top level</a></li>
+      <li><a name="toc-aclocal_002em4-at-top-level" href="#aclocal">13.4.8 <samp>aclocal.m4</samp> at top level</a></li>
+      <li><a name="toc-acconfig_002eh-at-top-level" href="#acconfig">13.4.9 <samp>acconfig.h</samp> at top level</a></li>
+      <li><a name="toc-config_002eh_002ein-at-top-level" href="#config_002eh_002ein">13.4.10 <samp>config.h.in</samp> at top level</a></li>
+      <li><a name="toc-Makefile_002ein-at-top-level" href="#Makefile">13.4.11 <samp>Makefile.in</samp> at top level</a></li>
+      <li><a name="toc-Makefile_002ein-in-src_002f" href="#src_002fMakefile">13.4.12 <samp>Makefile.in</samp> in <samp>src/</samp></a></li>
+      <li><a name="toc-gettext_002eh-in-lib_002f" href="#lib_002fgettext_002eh">13.4.13 <samp>gettext.h</samp> in <samp>lib/</samp></a></li>
+    </ul></li>
+    <li><a name="toc-Autoconf-macros-for-use-in-configure_002eac" href="#autoconf-macros">13.5 Autoconf macros for use in <samp>configure.ac</samp></a>
+    <ul class="no-bullet">
+      <li><a name="toc-AM_005fGNU_005fGETTEXT-in-gettext_002em4" href="#AM_005fGNU_005fGETTEXT">13.5.1 AM_GNU_GETTEXT in <samp>gettext.m4</samp></a></li>
+      <li><a name="toc-AM_005fGNU_005fGETTEXT_005fVERSION-in-gettext_002em4" href="#AM_005fGNU_005fGETTEXT_005fVERSION">13.5.2 AM_GNU_GETTEXT_VERSION in <samp>gettext.m4</samp></a></li>
+      <li><a name="toc-AM_005fGNU_005fGETTEXT_005fNEED-in-gettext_002em4" href="#AM_005fGNU_005fGETTEXT_005fNEED">13.5.3 AM_GNU_GETTEXT_NEED in <samp>gettext.m4</samp></a></li>
+      <li><a name="toc-AM_005fGNU_005fGETTEXT_005fINTL_005fSUBDIR-in-intldir_002em4" href="#AM_005fGNU_005fGETTEXT_005fINTL_005fSUBDIR">13.5.4 AM_GNU_GETTEXT_INTL_SUBDIR in <samp>intldir.m4</samp></a></li>
+      <li><a name="toc-AM_005fPO_005fSUBDIRS-in-po_002em4" href="#AM_005fPO_005fSUBDIRS">13.5.5 AM_PO_SUBDIRS in <samp>po.m4</samp></a></li>
+      <li><a name="toc-AM_005fXGETTEXT_005fOPTION-in-po_002em4" href="#AM_005fXGETTEXT_005fOPTION">13.5.6 AM_XGETTEXT_OPTION in <samp>po.m4</samp></a></li>
+      <li><a name="toc-AM_005fICONV-in-iconv_002em4" href="#AM_005fICONV">13.5.7 AM_ICONV in <samp>iconv.m4</samp></a></li>
+    </ul></li>
+    <li><a name="toc-Integrating-with-Version-Control-Systems" href="#Version-Control-Issues">13.6 Integrating with Version Control Systems</a>
+    <ul class="no-bullet">
+      <li><a name="toc-Avoiding-version-mismatch-in-distributed-development" href="#Distributed-Development">13.6.1 Avoiding version mismatch in distributed development</a></li>
+      <li><a name="toc-Files-to-put-under-version-control" href="#Files-under-Version-Control">13.6.2 Files to put under version control</a></li>
+      <li><a name="toc-Put-PO-Files-under-Version-Control" href="#Translations-under-Version-Control">13.6.3 Put PO Files under Version Control</a></li>
+      <li><a name="toc-Invoking-the-autopoint-Program" href="#autopoint-Invocation">13.6.4 Invoking the <code>autopoint</code> Program</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Options" href="#Options">13.6.4.1 Options</a></li>
+        <li><a name="toc-Informative-output-15" href="#Informative-output-15">13.6.4.2 Informative output</a></li>
+      </ul></li>
+    </ul></li>
+    <li><a name="toc-Creating-a-Distribution-Tarball" href="#Release-Management">13.7 Creating a Distribution Tarball</a></li>
+  </ul></li>
+  <li><a name="toc-The-Installer_0027s-and-Distributor_0027s-View" href="#Installers">14 The Installer&rsquo;s and Distributor&rsquo;s View</a></li>
+  <li><a name="toc-Other-Programming-Languages" href="#Programming-Languages">15 Other Programming Languages</a>
+  <ul class="no-bullet">
+    <li><a name="toc-The-Language-Implementor_0027s-View" href="#Language-Implementors">15.1 The Language Implementor&rsquo;s View</a></li>
+    <li><a name="toc-The-Programmer_0027s-View-1" href="#Programmers-for-other-Languages">15.2 The Programmer&rsquo;s View</a></li>
+    <li><a name="toc-The-Translator_0027s-View-1" href="#Translators-for-other-Languages">15.3 The Translator&rsquo;s View</a>
+    <ul class="no-bullet">
+      <li><a name="toc-C-Format-Strings" href="#c_002dformat">15.3.1 C Format Strings</a></li>
+      <li><a name="toc-Objective-C-Format-Strings" href="#objc_002dformat">15.3.2 Objective C Format Strings</a></li>
+      <li><a name="toc-Shell-Format-Strings" href="#sh_002dformat">15.3.3 Shell Format Strings</a></li>
+      <li><a name="toc-Python-Format-Strings" href="#python_002dformat">15.3.4 Python Format Strings</a></li>
+      <li><a name="toc-Lisp-Format-Strings" href="#lisp_002dformat">15.3.5 Lisp Format Strings</a></li>
+      <li><a name="toc-Emacs-Lisp-Format-Strings" href="#elisp_002dformat">15.3.6 Emacs Lisp Format Strings</a></li>
+      <li><a name="toc-librep-Format-Strings" href="#librep_002dformat">15.3.7 librep Format Strings</a></li>
+      <li><a name="toc-Scheme-Format-Strings" href="#scheme_002dformat">15.3.8 Scheme Format Strings</a></li>
+      <li><a name="toc-Smalltalk-Format-Strings" href="#smalltalk_002dformat">15.3.9 Smalltalk Format Strings</a></li>
+      <li><a name="toc-Java-Format-Strings" href="#java_002dformat">15.3.10 Java Format Strings</a></li>
+      <li><a name="toc-C_0023-Format-Strings" href="#csharp_002dformat">15.3.11 C# Format Strings</a></li>
+      <li><a name="toc-awk-Format-Strings" href="#awk_002dformat">15.3.12 awk Format Strings</a></li>
+      <li><a name="toc-Object-Pascal-Format-Strings" href="#object_002dpascal_002dformat">15.3.13 Object Pascal Format Strings</a></li>
+      <li><a name="toc-YCP-Format-Strings" href="#ycp_002dformat">15.3.14 YCP Format Strings</a></li>
+      <li><a name="toc-Tcl-Format-Strings" href="#tcl_002dformat">15.3.15 Tcl Format Strings</a></li>
+      <li><a name="toc-Perl-Format-Strings" href="#perl_002dformat">15.3.16 Perl Format Strings</a></li>
+      <li><a name="toc-PHP-Format-Strings" href="#php_002dformat">15.3.17 PHP Format Strings</a></li>
+      <li><a name="toc-GCC-internal-Format-Strings" href="#gcc_002dinternal_002dformat">15.3.18 GCC internal Format Strings</a></li>
+      <li><a name="toc-GFC-internal-Format-Strings" href="#gfc_002dinternal_002dformat">15.3.19 GFC internal Format Strings</a></li>
+      <li><a name="toc-Qt-Format-Strings" href="#qt_002dformat">15.3.20 Qt Format Strings</a></li>
+      <li><a name="toc-Qt-Format-Strings-1" href="#qt_002dplural_002dformat">15.3.21 Qt Format Strings</a></li>
+      <li><a name="toc-KDE-Format-Strings" href="#kde_002dformat">15.3.22 KDE Format Strings</a></li>
+      <li><a name="toc-KUIT-Format-Strings" href="#kde_002dkuit_002dformat">15.3.23 KUIT Format Strings</a></li>
+      <li><a name="toc-Boost-Format-Strings" href="#boost_002dformat">15.3.24 Boost Format Strings</a></li>
+      <li><a name="toc-Lua-Format-Strings" href="#lua_002dformat">15.3.25 Lua Format Strings</a></li>
+      <li><a name="toc-JavaScript-Format-Strings" href="#javascript_002dformat">15.3.26 JavaScript Format Strings</a></li>
+    </ul></li>
+    <li><a name="toc-The-Maintainer_0027s-View-1" href="#Maintainers-for-other-Languages">15.4 The Maintainer&rsquo;s View</a></li>
+    <li><a name="toc-Individual-Programming-Languages" href="#List-of-Programming-Languages">15.5 Individual Programming Languages</a>
+    <ul class="no-bullet">
+      <li><a name="toc-C_002c-C_002b_002b_002c-Objective-C" href="#C">15.5.1 C, C++, Objective C</a></li>
+      <li><a name="toc-sh-_002d-Shell-Script" href="#sh">15.5.2 sh - Shell Script</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Preparing-Shell-Scripts-for-Internationalization" href="#Preparing-Shell-Scripts">15.5.2.1 Preparing Shell Scripts for Internationalization</a></li>
+        <li><a name="toc-Contents-of-gettext_002esh" href="#gettext_002esh">15.5.2.2 Contents of <code>gettext.sh</code></a></li>
+        <li><a name="toc-Invoking-the-gettext-program" href="#gettext-Invocation">15.5.2.3 Invoking the <code>gettext</code> program</a></li>
+        <li><a name="toc-Invoking-the-ngettext-program" href="#ngettext-Invocation">15.5.2.4 Invoking the <code>ngettext</code> program</a></li>
+        <li><a name="toc-Invoking-the-envsubst-program" href="#envsubst-Invocation">15.5.2.5 Invoking the <code>envsubst</code> program</a></li>
+        <li><a name="toc-Invoking-the-eval_005fgettext-function" href="#eval_005fgettext-Invocation">15.5.2.6 Invoking the <code>eval_gettext</code> function</a></li>
+        <li><a name="toc-Invoking-the-eval_005fngettext-function" href="#eval_005fngettext-Invocation">15.5.2.7 Invoking the <code>eval_ngettext</code> function</a></li>
+      </ul></li>
+      <li><a name="toc-bash-_002d-Bourne_002dAgain-Shell-Script" href="#bash">15.5.3 bash - Bourne-Again Shell Script</a></li>
+      <li><a name="toc-Python-1" href="#Python">15.5.4 Python</a></li>
+      <li><a name="toc-GNU-clisp-_002d-Common-Lisp" href="#Common-Lisp">15.5.5 GNU clisp - Common Lisp</a></li>
+      <li><a name="toc-GNU-clisp-C-sources" href="#clisp-C">15.5.6 GNU clisp C sources</a></li>
+      <li><a name="toc-Emacs-Lisp-1" href="#Emacs-Lisp">15.5.7 Emacs Lisp</a></li>
+      <li><a name="toc-librep-1" href="#librep">15.5.8 librep</a></li>
+      <li><a name="toc-GNU-guile-_002d-Scheme" href="#Scheme">15.5.9 GNU guile - Scheme</a></li>
+      <li><a name="toc-GNU-Smalltalk" href="#Smalltalk">15.5.10 GNU Smalltalk</a></li>
+      <li><a name="toc-Java-1" href="#Java">15.5.11 Java</a></li>
+      <li><a name="toc-C_0023-1" href="#C_0023">15.5.12 C#</a></li>
+      <li><a name="toc-GNU-awk" href="#gawk">15.5.13 GNU awk</a></li>
+      <li><a name="toc-Pascal-_002d-Free-Pascal-Compiler" href="#Pascal">15.5.14 Pascal - Free Pascal Compiler</a></li>
+      <li><a name="toc-wxWidgets-library" href="#wxWidgets">15.5.15 wxWidgets library</a></li>
+      <li><a name="toc-YCP-_002d-YaST2-scripting-language" href="#YCP">15.5.16 YCP - YaST2 scripting language</a></li>
+      <li><a name="toc-Tcl-_002d-Tk_0027s-scripting-language" href="#Tcl">15.5.17 Tcl - Tk&rsquo;s scripting language</a></li>
+      <li><a name="toc-Perl-1" href="#Perl">15.5.18 Perl</a>
+      <ul class="no-bullet">
+        <li><a name="toc-General-Problems-Parsing-Perl-Code" href="#General-Problems">15.5.18.1 General Problems Parsing Perl Code</a></li>
+        <li><a name="toc-Which-keywords-will-xgettext-look-for_003f" href="#Default-Keywords">15.5.18.2 Which keywords will xgettext look for?</a></li>
+        <li><a name="toc-How-to-Extract-Hash-Keys" href="#Special-Keywords">15.5.18.3 How to Extract Hash Keys</a></li>
+        <li><a name="toc-What-are-Strings-And-Quote_002dlike-Expressions_003f" href="#Quote_002dlike-Expressions">15.5.18.4 What are Strings And Quote-like Expressions?</a></li>
+        <li><a name="toc-Invalid-Uses-Of-String-Interpolation" href="#Interpolation-I">15.5.18.5 Invalid Uses Of String Interpolation</a></li>
+        <li><a name="toc-Valid-Uses-Of-String-Interpolation" href="#Interpolation-II">15.5.18.6 Valid Uses Of String Interpolation</a></li>
+        <li><a name="toc-When-To-Use-Parentheses" href="#Parentheses">15.5.18.7 When To Use Parentheses</a></li>
+        <li><a name="toc-How-To-Grok-with-Long-Lines" href="#Long-Lines">15.5.18.8 How To Grok with Long Lines</a></li>
+        <li><a name="toc-Bugs_002c-Pitfalls_002c-And-Things-That-Do-Not-Work" href="#Perl-Pitfalls">15.5.18.9 Bugs, Pitfalls, And Things That Do Not Work</a></li>
+      </ul></li>
+      <li><a name="toc-PHP-Hypertext-Preprocessor" href="#PHP">15.5.19 PHP Hypertext Preprocessor</a></li>
+      <li><a name="toc-Pike-1" href="#Pike">15.5.20 Pike</a></li>
+      <li><a name="toc-GNU-Compiler-Collection-sources" href="#GCC_002dsource">15.5.21 GNU Compiler Collection sources</a></li>
+      <li><a name="toc-Lua-1" href="#Lua">15.5.22 Lua</a></li>
+      <li><a name="toc-JavaScript-1" href="#JavaScript">15.5.23 JavaScript</a></li>
+      <li><a name="toc-Vala-1" href="#Vala">15.5.24 Vala</a></li>
+    </ul></li>
+    <li><a name="toc-Internationalizable-Data" href="#List-of-Data-Formats">15.6 Internationalizable Data</a>
+    <ul class="no-bullet">
+      <li><a name="toc-POT-_002d-Portable-Object-Template" href="#POT">15.6.1 POT - Portable Object Template</a></li>
+      <li><a name="toc-Resource-String-Table" href="#RST">15.6.2 Resource String Table</a></li>
+      <li><a name="toc-Glade-_002d-GNOME-user-interface-description" href="#Glade">15.6.3 Glade - GNOME user interface description</a></li>
+      <li><a name="toc-GSettings-_002d-GNOME-user-configuration-schema" href="#GSettings">15.6.4 GSettings - GNOME user configuration schema</a></li>
+      <li><a name="toc-AppData-_002d-freedesktop_002eorg-application-description" href="#AppData">15.6.5 AppData - freedesktop.org application description</a></li>
+      <li><a name="toc-Preparing-Rules-for-XML-Internationalization" href="#Preparing-ITS-Rules">15.6.6 Preparing Rules for XML Internationalization</a>
+      <ul class="no-bullet">
+        <li><a name="toc-Two-Use_002dcases-of-Translated-Strings-in-XML" href="#Two-Use_002dcases-of-Translated-Strings-in-XML">15.6.6.1 Two Use-cases of Translated Strings in XML</a></li>
+      </ul></li>
+    </ul></li>
+  </ul></li>
+  <li><a name="toc-Concluding-Remarks" href="#Conclusion">16 Concluding Remarks</a>
+  <ul class="no-bullet">
+    <li><a name="toc-History-of-GNU-gettext" href="#History">16.1 History of GNU <code>gettext</code></a></li>
+    <li><a name="toc-Related-Readings" href="#References">16.2 Related Readings</a></li>
+  </ul></li>
+  <li><a name="toc-Language-Codes-1" href="#Language-Codes">Appendix A Language Codes</a>
+  <ul class="no-bullet">
+    <li><a name="toc-Usual-Language-Codes-1" href="#Usual-Language-Codes">A.1 Usual Language Codes</a></li>
+    <li><a name="toc-Rare-Language-Codes-1" href="#Rare-Language-Codes">A.2 Rare Language Codes</a></li>
+  </ul></li>
+  <li><a name="toc-Country-Codes-1" href="#Country-Codes">Appendix B Country Codes</a></li>
+  <li><a name="toc-Licenses-1" href="#Licenses">Appendix C Licenses</a>
+  <ul class="no-bullet">
+    <li><a name="toc-GNU-GENERAL-PUBLIC-LICENSE" href="#GNU-GPL">C.1 GNU GENERAL PUBLIC LICENSE</a></li>
+    <li><a name="toc-GNU-LESSER-GENERAL-PUBLIC-LICENSE" href="#GNU-LGPL">C.2 GNU LESSER GENERAL PUBLIC LICENSE</a></li>
+    <li><a name="toc-GNU-Free-Documentation-License" href="#GNU-FDL">C.3 GNU Free Documentation License</a></li>
+  </ul></li>
+  <li><a name="toc-Program-Index-1" href="#Program-Index">Program Index</a></li>
+  <li><a name="toc-Option-Index-1" href="#Option-Index">Option Index</a></li>
+  <li><a name="toc-Variable-Index-1" href="#Variable-Index">Variable Index</a></li>
+  <li><a name="toc-PO-Mode-Index-1" href="#PO-Mode-Index">PO Mode Index</a></li>
+  <li><a name="toc-Autoconf-Macro-Index-1" href="#Autoconf-Macro-Index">Autoconf Macro Index</a></li>
+  <li><a name="toc-General-Index" href="#Index">General Index</a></li>
+</ul>
+</div>
+
+
+<a name="Top"></a>
+<div class="header">
+<p>
+Next: <a href="#Introduction" accesskey="n" rel="next">Introduction</a>, Previous: <a href="dir.html#Top" accesskey="p" rel="prev">(dir)</a>, Up: <a href="dir.html#Top" accesskey="u" rel="up">(dir)</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="GNU-gettext-utilities"></a>
+<h1 class="top">GNU <code>gettext</code> utilities</h1>
+
+<p>This manual documents the GNU gettext tools and the GNU libintl library,
+version 0.19.8.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Introduction" accesskey="1">Introduction</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Introduction
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Users" accesskey="2">Users</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The User&rsquo;s View
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#PO-Files" accesskey="3">PO Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The Format of PO Files
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Sources" accesskey="4">Sources</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Preparing Program Sources
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Template" accesskey="5">Template</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Making the PO Template File
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Creating" accesskey="6">Creating</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Creating a New PO File
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Updating" accesskey="7">Updating</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Updating Existing PO Files
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Editing" accesskey="8">Editing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Editing PO Files
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Manipulating" accesskey="9">Manipulating</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Manipulating PO Files
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Binaries">Binaries</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Producing Binary MO Files
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Programmers">Programmers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The Programmer&rsquo;s View
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Translators">Translators</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The Translator&rsquo;s View
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Maintainers">Maintainers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The Maintainer&rsquo;s View
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Installers">Installers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The Installer&rsquo;s and Distributor&rsquo;s View
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Programming-Languages">Programming Languages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Other Programming Languages
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Conclusion">Conclusion</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Concluding Remarks
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Language-Codes">Language Codes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">ISO 639 language codes
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Country-Codes">Country Codes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">ISO 3166 country codes
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Licenses">Licenses</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Licenses
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Program-Index">Program Index</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Index of Programs
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Option-Index">Option Index</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Index of Command-Line Options
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Variable-Index">Variable Index</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Index of Environment Variables
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#PO-Mode-Index">PO Mode Index</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Index of Emacs PO Mode Commands
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Autoconf-Macro-Index">Autoconf Macro Index</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Index of Autoconf Macros
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Index">Index</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">General Index
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+</pre></th></tr><tr><th colspan="3" align="left" valign="top"><pre class="menu-comment"> &mdash; The Detailed Node Listing &mdash;
+
+Introduction
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Why">Why</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The Purpose of GNU <code>gettext</code>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Concepts">Concepts</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">I18n, L10n, and Such
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Aspects">Aspects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Aspects in Native Language Support
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Files">Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Files Conveying Translations
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Overview">Overview</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Overview of GNU <code>gettext</code>
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+The User&rsquo;s View
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#System-Installation">System Installation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Questions During Operating System Installation
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Setting-the-GUI-Locale">Setting the GUI Locale</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to Specify the Locale Used by GUI Programs
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Setting-the-POSIX-Locale">Setting the POSIX Locale</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to Specify the Locale According to POSIX
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Installing-Localizations">Installing Localizations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to Install Additional Translations
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Setting the Locale through Environment Variables
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Locale-Names">Locale Names</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How a Locale Specification Looks Like
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Locale-Environment-Variables">Locale Environment Variables</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Which Environment Variable Specfies What
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#The-LANGUAGE-variable">The LANGUAGE variable</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to Specify a Priority List of Languages
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Preparing Program Sources
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Importing">Importing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Importing the <code>gettext</code> declaration
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Triggering">Triggering</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Triggering <code>gettext</code> Operations
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Preparing-Strings">Preparing Strings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Preparing Translatable Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Mark-Keywords">Mark Keywords</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How Marks Appear in Sources
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Marking">Marking</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Marking Translatable Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#c_002dformat-Flag">c-format Flag</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Telling something about the following string
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Special-cases">Special cases</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Special Cases of Translatable Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Bug-Report-Address">Bug Report Address</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Letting Users Report Translation Bugs
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Names">Names</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Marking Proper Names for Translation
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Libraries">Libraries</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Preparing Library Sources
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Making the PO Template File
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#xgettext-Invocation">xgettext Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>xgettext</code> Program
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Creating a New PO File
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#msginit-Invocation">msginit Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msginit</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Header-Entry">Header Entry</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Filling in the Header Entry
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Updating Existing PO Files
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#msgmerge-Invocation">msgmerge Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msgmerge</code> Program
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Editing PO Files
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#KBabel">KBabel</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">KDE&rsquo;s PO File Editor
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Gtranslator">Gtranslator</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GNOME&rsquo;s PO File Editor
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#PO-Mode">PO Mode</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Emacs&rsquo;s PO File Editor
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Compendium">Compendium</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Using Translation Compendia
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Emacs&rsquo;s PO File Editor
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Installation">Installation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Completing GNU <code>gettext</code> Installation
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Main-PO-Commands">Main PO Commands</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Main Commands
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Entry-Positioning">Entry Positioning</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Entry Positioning
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Normalizing">Normalizing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Normalizing Strings in Entries
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Translated-Entries">Translated Entries</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Translated Entries
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Fuzzy-Entries">Fuzzy Entries</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Fuzzy Entries
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Untranslated-Entries">Untranslated Entries</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Untranslated Entries
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Obsolete-Entries">Obsolete Entries</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Obsolete Entries
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Modifying-Translations">Modifying Translations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Modifying Translations
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Modifying-Comments">Modifying Comments</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Modifying Comments
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Subedit">Subedit</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Mode for Editing Translations
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#C-Sources-Context">C Sources Context</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">C Sources Context
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Auxiliary">Auxiliary</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Consulting Auxiliary PO Files
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Using Translation Compendia
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Creating-Compendia">Creating Compendia</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Merging translations for later use
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Using-Compendia">Using Compendia</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Using older translations if they fit
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Manipulating PO Files
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#msgcat-Invocation">msgcat Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msgcat</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#msgconv-Invocation">msgconv Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msgconv</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#msggrep-Invocation">msggrep Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msggrep</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#msgfilter-Invocation">msgfilter Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msgfilter</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#msguniq-Invocation">msguniq Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msguniq</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#msgcomm-Invocation">msgcomm Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msgcomm</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#msgcmp-Invocation">msgcmp Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msgcmp</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#msgattrib-Invocation">msgattrib Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msgattrib</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#msgen-Invocation">msgen Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msgen</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#msgexec-Invocation">msgexec Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msgexec</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Colorizing">Colorizing</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Highlighting parts of PO files
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#libgettextpo">libgettextpo</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Writing your own programs that process PO files
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Highlighting parts of PO files
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#The-_002d_002dcolor-option">The --color option</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Triggering colorized output
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#The-TERM-variable">The TERM variable</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The environment variable <code>TERM</code>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#The-_002d_002dstyle-option">The --style option</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The <code>--style</code> option
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Style-rules">Style rules</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Style rules for PO files
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Customizing-less">Customizing less</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Customizing <code>less</code> for viewing PO files
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Producing Binary MO Files
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#msgfmt-Invocation">msgfmt Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msgfmt</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#msgunfmt-Invocation">msgunfmt Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>msgunfmt</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#MO-Files">MO Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The Format of GNU MO Files
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+The Programmer&rsquo;s View
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#catgets">catgets</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">About <code>catgets</code>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#gettext">gettext</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">About <code>gettext</code>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Comparison">Comparison</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Comparing the two interfaces
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Using-libintl_002ea">Using libintl.a</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Using libintl.a in own programs
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#gettext-grok">gettext grok</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Being a <code>gettext</code> grok
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Temp-Programmers">Temp Programmers</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Temporary Notes for the Programmers Chapter
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+About <code>catgets</code>
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Interface-to-catgets">Interface to catgets</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The interface
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Problems-with-catgets">Problems with catgets</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Problems with the <code>catgets</code> interface?!
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+About <code>gettext</code>
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Interface-to-gettext">Interface to gettext</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The interface
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Ambiguities">Ambiguities</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Solving ambiguities
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Locating-Catalogs">Locating Catalogs</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Locating message catalog files
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Charset-conversion">Charset conversion</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to request conversion to Unicode
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Contexts">Contexts</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Solving ambiguities in GUI programs
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Plural-forms">Plural forms</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Additional functions for handling plurals
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Optimized-gettext">Optimized gettext</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Optimization of the *gettext functions
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Temporary Notes for the Programmers Chapter
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Temp-Implementations">Temp Implementations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Temporary - Two Possible Implementations
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Temp-catgets">Temp catgets</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Temporary - About <code>catgets</code>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Temp-WSI">Temp WSI</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Temporary - Why a single implementation
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Temp-Notes">Temp Notes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Temporary - Notes
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+The Translator&rsquo;s View
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Trans-Intro-0">Trans Intro 0</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Introduction 0
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Trans-Intro-1">Trans Intro 1</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Introduction 1
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Discussions">Discussions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Discussions
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Organization">Organization</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Organization
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Information-Flow">Information Flow</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Information Flow
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Translating-plural-forms">Translating plural forms</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to fill in <code>msgstr[0]</code>, <code>msgstr[1]</code>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Prioritizing-messages">Prioritizing messages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to find which messages to translate first
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Organization
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Central-Coordination">Central Coordination</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Central Coordination
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#National-Teams">National Teams</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">National Teams
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Mailing-Lists">Mailing Lists</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Mailing Lists
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+National Teams
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Sub_002dCultures">Sub-Cultures</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Sub-Cultures
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Organizational-Ideas">Organizational Ideas</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Organizational Ideas
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+The Maintainer&rsquo;s View
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Flat-and-Non_002dFlat">Flat and Non-Flat</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Flat or Non-Flat Directory Structures
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Prerequisites">Prerequisites</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Prerequisite Works
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#gettextize-Invocation">gettextize Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>gettextize</code> Program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Adjusting-Files">Adjusting Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Files You Must Create or Alter
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#autoconf-macros">autoconf macros</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Autoconf macros for use in <samp>configure.ac</samp>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Version-Control-Issues">Version Control Issues</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Release-Management">Release Management</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Creating a Distribution Tarball
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Files You Must Create or Alter
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#po_002fPOTFILES_002ein">po/POTFILES.in</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><samp>POTFILES.in</samp> in <samp>po/</samp>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#po_002fLINGUAS">po/LINGUAS</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><samp>LINGUAS</samp> in <samp>po/</samp>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#po_002fMakevars">po/Makevars</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><samp>Makevars</samp> in <samp>po/</samp>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#po_002fRules_002d_002a">po/Rules-*</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Extending <samp>Makefile</samp> in <samp>po/</samp>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#configure_002eac">configure.ac</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><samp>configure.ac</samp> at top level
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#config_002eguess">config.guess</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><samp>config.guess</samp>, <samp>config.sub</samp> at top level
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#mkinstalldirs">mkinstalldirs</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><samp>mkinstalldirs</samp> at top level
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#aclocal">aclocal</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><samp>aclocal.m4</samp> at top level
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#acconfig">acconfig</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><samp>acconfig.h</samp> at top level
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#config_002eh_002ein">config.h.in</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><samp>config.h.in</samp> at top level
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Makefile">Makefile</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><samp>Makefile.in</samp> at top level
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#src_002fMakefile">src/Makefile</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><samp>Makefile.in</samp> in <samp>src/</samp>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#lib_002fgettext_002eh">lib/gettext.h</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top"><samp>gettext.h</samp> in <samp>lib/</samp>
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Autoconf macros for use in <samp>configure.ac</samp>
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#AM_005fGNU_005fGETTEXT">AM_GNU_GETTEXT</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">AM_GNU_GETTEXT in <samp>gettext.m4</samp>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#AM_005fGNU_005fGETTEXT_005fVERSION">AM_GNU_GETTEXT_VERSION</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">AM_GNU_GETTEXT_VERSION in <samp>gettext.m4</samp>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#AM_005fGNU_005fGETTEXT_005fNEED">AM_GNU_GETTEXT_NEED</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">AM_GNU_GETTEXT_NEED in <samp>gettext.m4</samp>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#AM_005fGNU_005fGETTEXT_005fINTL_005fSUBDIR">AM_GNU_GETTEXT_INTL_SUBDIR</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">AM_GNU_GETTEXT_INTL_SUBDIR in <samp>intldir.m4</samp>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#AM_005fPO_005fSUBDIRS">AM_PO_SUBDIRS</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">AM_PO_SUBDIRS in <samp>po.m4</samp>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#AM_005fXGETTEXT_005fOPTION">AM_XGETTEXT_OPTION</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">AM_XGETTEXT_OPTION in <samp>po.m4</samp>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#AM_005fICONV">AM_ICONV</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">AM_ICONV in <samp>iconv.m4</samp>
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Integrating with Version Control Systems
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Distributed-Development">Distributed Development</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Avoiding version mismatch in distributed development
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Files-under-Version-Control">Files under Version Control</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Files to put under version control
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Translations-under-Version-Control">Translations under Version Control</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Put PO Files under Version Control
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#autopoint-Invocation">autopoint Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>autopoint</code> Program
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Other Programming Languages
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Language-Implementors">Language Implementors</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The Language Implementor&rsquo;s View
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Programmers-for-other-Languages">Programmers for other Languages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The Programmer&rsquo;s View
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Translators-for-other-Languages">Translators for other Languages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The Translator&rsquo;s View
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Maintainers-for-other-Languages">Maintainers for other Languages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The Maintainer&rsquo;s View
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#List-of-Programming-Languages">List of Programming Languages</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Individual Programming Languages
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#List-of-Data-Formats">List of Data Formats</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Internationalizable Data
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+The Translator&rsquo;s View
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#c_002dformat">c-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">C Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#objc_002dformat">objc-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Objective C Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#sh_002dformat">sh-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Shell Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#python_002dformat">python-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Python Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#lisp_002dformat">lisp-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Lisp Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#elisp_002dformat">elisp-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Emacs Lisp Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#librep_002dformat">librep-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">librep Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#scheme_002dformat">scheme-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Scheme Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#smalltalk_002dformat">smalltalk-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Smalltalk Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#java_002dformat">java-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Java Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#csharp_002dformat">csharp-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">C# Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#awk_002dformat">awk-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">awk Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#object_002dpascal_002dformat">object-pascal-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Object Pascal Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#ycp_002dformat">ycp-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">YCP Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#tcl_002dformat">tcl-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Tcl Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#perl_002dformat">perl-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Perl Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#php_002dformat">php-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">PHP Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#gcc_002dinternal_002dformat">gcc-internal-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GCC internal Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#gfc_002dinternal_002dformat">gfc-internal-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GFC internal Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#qt_002dformat">qt-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Qt Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#qt_002dplural_002dformat">qt-plural-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Qt Plural Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#kde_002dformat">kde-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">KDE Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#boost_002dformat">boost-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Boost Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#lua_002dformat">lua-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Lua Format Strings
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#javascript_002dformat">javascript-format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">JavaScript Format Strings
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Individual Programming Languages
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#C">C</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">C, C++, Objective C
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#sh">sh</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">sh - Shell Script
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#bash">bash</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">bash - Bourne-Again Shell Script
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Python">Python</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Python
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Common-Lisp">Common Lisp</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GNU clisp - Common Lisp
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#clisp-C">clisp C</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GNU clisp C sources
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Emacs-Lisp">Emacs Lisp</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Emacs Lisp
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#librep">librep</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">librep
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Scheme">Scheme</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GNU guile - Scheme
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Smalltalk">Smalltalk</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GNU Smalltalk
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Java">Java</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Java
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#C_0023">C#</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">C#
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#gawk">gawk</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GNU awk
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Pascal">Pascal</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Pascal - Free Pascal Compiler
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#wxWidgets">wxWidgets</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">wxWidgets library
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#YCP">YCP</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">YCP - YaST2 scripting language
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Tcl">Tcl</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Tcl - Tk&rsquo;s scripting language
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Perl">Perl</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Perl
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#PHP">PHP</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">PHP Hypertext Preprocessor
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Pike">Pike</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Pike
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#GCC_002dsource">GCC-source</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GNU Compiler Collection sources
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Lua">Lua</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Lua
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#JavaScript">JavaScript</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">JavaScript
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Vala">Vala</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Vala
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+sh - Shell Script
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Preparing-Shell-Scripts">Preparing Shell Scripts</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Preparing Shell Scripts for Internationalization
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#gettext_002esh">gettext.sh</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Contents of <code>gettext.sh</code>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#gettext-Invocation">gettext Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>gettext</code> program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#ngettext-Invocation">ngettext Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>ngettext</code> program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#envsubst-Invocation">envsubst Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>envsubst</code> program
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#eval_005fgettext-Invocation">eval_gettext Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>eval_gettext</code> function
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#eval_005fngettext-Invocation">eval_ngettext Invocation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invoking the <code>eval_ngettext</code> function
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Perl
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#General-Problems">General Problems</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">General Problems Parsing Perl Code
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Default-Keywords">Default Keywords</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Which Keywords Will xgettext Look For?
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Special-Keywords">Special Keywords</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to Extract Hash Keys
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Quote_002dlike-Expressions">Quote-like Expressions</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">What are Strings And Quote-like Expressions?
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Interpolation-I">Interpolation I</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Invalid String Interpolation
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Interpolation-II">Interpolation II</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Valid String Interpolation
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Parentheses">Parentheses</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">When To Use Parentheses
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Long-Lines">Long Lines</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How To Grok with Long Lines
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Perl-Pitfalls">Perl Pitfalls</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Bugs, Pitfalls, and Things That Do Not Work
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Internationalizable Data
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#POT">POT</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">POT - Portable Object Template
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#RST">RST</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Resource String Table
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Glade">Glade</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Glade - GNOME user interface description
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#GSettings">GSettings</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GSettings - GNOME user configuration schema
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#AppData">AppData</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">AppData - freedesktop.org application description
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Preparing-ITS-Rules">Preparing ITS Rules</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Preparing Rules for XML Internationalization
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Concluding Remarks
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#History">History</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">History of GNU <code>gettext</code>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#References">References</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Related Readings
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Language Codes
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#Usual-Language-Codes">Usual Language Codes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Two-letter ISO 639 language codes
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Rare-Language-Codes">Rare Language Codes</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Three-letter ISO 639 language codes
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+Licenses
+
+</pre></th></tr><tr><td align="left" valign="top">&bull; <a href="#GNU-GPL">GNU GPL</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GNU General Public License
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#GNU-LGPL">GNU LGPL</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GNU Lesser General Public License
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#GNU-FDL">GNU FDL</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">GNU Free Documentation License
+</td></tr>
+<tr><th colspan="3" align="left" valign="top"><pre class="menu-comment">
+</pre></th></tr></table>
+
+
+<hr>
+<a name="Introduction"></a>
+<div class="header">
+<p>
+Next: <a href="#Users" accesskey="n" rel="next">Users</a>, Previous: <a href="#Top" accesskey="p" rel="prev">Top</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Introduction-1"></a>
+<h2 class="chapter">1 Introduction</h2>
+
+<p>This chapter explains the goals sought in the creation
+of GNU <code>gettext</code> and the free Translation Project.
+Then, it explains a few broad concepts around
+Native Language Support, and positions message translation with regard
+to other aspects of national and cultural variance, as they apply
+to programs.  It also surveys those files used to convey the
+translations.  It explains how the various tools interact in the
+initial generation of these files, and later, how the maintenance
+cycle should usually operate.
+</p>
+<a name="index-sex"></a>
+<a name="index-he_002c-she_002c-and-they"></a>
+<a name="index-she_002c-he_002c-and-they"></a>
+<p>In this manual, we use <em>he</em> when speaking of the programmer or
+maintainer, <em>she</em> when speaking of the translator, and <em>they</em>
+when speaking of the installers or end users of the translated program.
+This is only a convenience for clarifying the documentation.  It is
+<em>absolutely</em> not meant to imply that some roles are more appropriate
+to males or females.  Besides, as you might guess, GNU <code>gettext</code>
+is meant to be useful for people using computers, whatever their sex,
+race, religion or nationality!
+</p>
+<a name="index-bug-report-address"></a>
+<p>Please send suggestions and corrections to:
+</p>
+<div class="example">
+<pre class="example"><span class="roman">Internet address:</span>
+    bug-gnu-gettext@gnu.org
+</pre></div>
+
+<p>Please include the manual&rsquo;s edition number and update date in your messages.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Why" accesskey="1">Why</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">The Purpose of GNU <code>gettext</code>
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Concepts" accesskey="2">Concepts</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">I18n, L10n, and Such
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Aspects" accesskey="3">Aspects</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Aspects in Native Language Support
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Files" accesskey="4">Files</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Files Conveying Translations
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Overview" accesskey="5">Overview</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Overview of GNU <code>gettext</code>
+</td></tr>
+</table>
+
+<hr>
+<a name="Why"></a>
+<div class="header">
+<p>
+Next: <a href="#Concepts" accesskey="n" rel="next">Concepts</a>, Previous: <a href="#Introduction" accesskey="p" rel="prev">Introduction</a>, Up: <a href="#Introduction" accesskey="u" rel="up">Introduction</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="The-Purpose-of-GNU-gettext"></a>
+<h3 class="section">1.1 The Purpose of GNU <code>gettext</code></h3>
+
+<p>Usually, programs are written and documented in English, and use
+English at execution time to interact with users.  This is true
+not only of GNU software, but also of a great deal of proprietary
+and free software.  Using a common language is quite handy for
+communication between developers, maintainers and users from all
+countries.  On the other hand, most people are less comfortable with
+English than with their own native language, and would prefer to
+use their mother tongue for day to day&rsquo;s work, as far as possible.
+Many would simply <em>love</em> to see their computer screen showing
+a lot less of English, and far more of their own language.
+</p>
+<a name="index-Translation-Project"></a>
+<p>However, to many people, this dream might appear so far fetched that
+they may believe it is not even worth spending time thinking about
+it.  They have no confidence at all that the dream might ever
+become true.  Yet some have not lost hope, and have organized themselves.
+The Translation Project is a formalization of this hope into a
+workable structure, which has a good chance to get all of us nearer
+the achievement of a truly multi-lingual set of programs.
+</p>
+<p>GNU <code>gettext</code> is an important step for the Translation Project,
+as it is an asset on which we may build many other steps.  This package
+offers to programmers, translators and even users, a well integrated
+set of tools and documentation.  Specifically, the GNU <code>gettext</code>
+utilities are a set of tools that provides a framework within which
+other free packages may produce multi-lingual messages.  These tools
+include
+</p>
+<ul>
+<li> A set of conventions about how programs should be written to support
+message catalogs.
+
+</li><li> A directory and file naming organization for the message catalogs
+themselves.
+
+</li><li> A runtime library supporting the retrieval of translated messages.
+
+</li><li> A few stand-alone programs to massage in various ways the sets of
+translatable strings, or already translated strings.
+
+</li><li> A library supporting the parsing and creation of files containing
+translated messages.
+
+</li><li> A special mode for Emacs<a name="DOCF1" href="#FOOT1"><sup>1</sup></a> which helps preparing these sets
+and bringing them up to date.
+</li></ul>
+
+<p>GNU <code>gettext</code> is designed to minimize the impact of
+internationalization on program sources, keeping this impact as small
+and hardly noticeable as possible.  Internationalization has better
+chances of succeeding if it is very light weighted, or at least,
+appear to be so, when looking at program sources.
+</p>
+<p>The Translation Project also uses the GNU <code>gettext</code> distribution
+as a vehicle for documenting its structure and methods.  This goes
+beyond the strict technicalities of documenting the GNU <code>gettext</code>
+proper.  By so doing, translators will find in a single place, as
+far as possible, all they need to know for properly doing their
+translating work.  Also, this supplemental documentation might also
+help programmers, and even curious users, in understanding how GNU
+<code>gettext</code> is related to the remainder of the Translation
+Project, and consequently, have a glimpse at the <em>big picture</em>.
+</p>
+<hr>
+<a name="Concepts"></a>
+<div class="header">
+<p>
+Next: <a href="#Aspects" accesskey="n" rel="next">Aspects</a>, Previous: <a href="#Why" accesskey="p" rel="prev">Why</a>, Up: <a href="#Introduction" accesskey="u" rel="up">Introduction</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="I18n_002c-L10n_002c-and-Such"></a>
+<h3 class="section">1.2 I18n, L10n, and Such</h3>
+
+<a name="index-i18n"></a>
+<a name="index-l10n"></a>
+<p>Two long words appear all the time when we discuss support of native
+language in programs, and these words have a precise meaning, worth
+being explained here, once and for all in this document.  The words are
+<em>internationalization</em> and <em>localization</em>.  Many people,
+tired of writing these long words over and over again, took the
+habit of writing <em>i18n</em> and <em>l10n</em> instead, quoting the first
+and last letter of each word, and replacing the run of intermediate
+letters by a number merely telling how many such letters there are.
+But in this manual, in the sake of clarity, we will patiently write
+the names in full, each time&hellip;
+</p>
+<a name="index-internationalization"></a>
+<p>By <em>internationalization</em>, one refers to the operation by which a
+program, or a set of programs turned into a package, is made aware of and
+able to support multiple languages.  This is a generalization process,
+by which the programs are untied from calling only English strings or
+other English specific habits, and connected to generic ways of doing
+the same, instead.  Program developers may use various techniques to
+internationalize their programs.  Some of these have been standardized.
+GNU <code>gettext</code> offers one of these standards.  See <a href="#Programmers">Programmers</a>.
+</p>
+<a name="index-localization"></a>
+<p>By <em>localization</em>, one means the operation by which, in a set
+of programs already internationalized, one gives the program all
+needed information so that it can adapt itself to handle its input
+and output in a fashion which is correct for some native language and
+cultural habits.  This is a particularisation process, by which generic
+methods already implemented in an internationalized program are used
+in specific ways.  The programming environment puts several functions
+to the programmers disposal which allow this runtime configuration.
+The formal description of specific set of cultural habits for some
+country, together with all associated translations targeted to the
+same native language, is called the <em>locale</em> for this language
+or country.  Users achieve localization of programs by setting proper
+values to special environment variables, prior to executing those
+programs, identifying which locale should be used.
+</p>
+<p>In fact, locale message support is only one component of the cultural
+data that makes up a particular locale.  There are a whole host of
+routines and functions provided to aid programmers in developing
+internationalized software and which allow them to access the data
+stored in a particular locale.  When someone presently refers to a
+particular locale, they are obviously referring to the data stored
+within that particular locale.  Similarly, if a programmer is referring
+to &ldquo;accessing the locale routines&rdquo;, they are referring to the
+complete suite of routines that access all of the locale&rsquo;s information.
+</p>
+<a name="index-NLS"></a>
+<a name="index-Native-Language-Support"></a>
+<a name="index-Natural-Language-Support"></a>
+<p>One uses the expression <em>Native Language Support</em>, or merely NLS,
+for speaking of the overall activity or feature encompassing both
+internationalization and localization, allowing for multi-lingual
+interactions in a program.  In a nutshell, one could say that
+internationalization is the operation by which further localizations
+are made possible.
+</p>
+<p>Also, very roughly said, when it comes to multi-lingual messages,
+internationalization is usually taken care of by programmers, and
+localization is usually taken care of by translators.
+</p>
+<hr>
+<a name="Aspects"></a>
+<div class="header">
+<p>
+Next: <a href="#Files" accesskey="n" rel="next">Files</a>, Previous: <a href="#Concepts" accesskey="p" rel="prev">Concepts</a>, Up: <a href="#Introduction" accesskey="u" rel="up">Introduction</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Aspects-in-Native-Language-Support"></a>
+<h3 class="section">1.3 Aspects in Native Language Support</h3>
+
+<a name="index-translation-aspects"></a>
+<p>For a totally multi-lingual distribution, there are many things to
+translate beyond output messages.
+</p>
+<ul>
+<li> As of today, GNU <code>gettext</code> offers a complete toolset for
+translating messages output by C programs.  Perl scripts and shell
+scripts will also need to be translated.  Even if there are today some hooks
+by which this can be done, these hooks are not integrated as well as they
+should be.
+
+</li><li> Some programs, like <code>autoconf</code> or <code>bison</code>, are able
+to produce other programs (or scripts).  Even if the generating
+programs themselves are internationalized, the generated programs they
+produce may need internationalization on their own, and this indirect
+internationalization could be automated right from the generating
+program.  In fact, quite usually, generating and generated programs
+could be internationalized independently, as the effort needed is
+fairly orthogonal.
+
+</li><li> A few programs include textual tables which might need translation
+themselves, independently of the strings contained in the program
+itself.  For example, RFC&nbsp;1345<!-- /@w --> gives an English description for each
+character which the <code>recode</code> program is able to reconstruct at execution.
+Since these descriptions are extracted from the RFC by mechanical means,
+translating them properly would require a prior translation of the RFC
+itself.
+
+</li><li> Almost all programs accept options, which are often worded out so to
+be descriptive for the English readers; one might want to consider
+offering translated versions for program options as well.
+
+</li><li> Many programs read, interpret, compile, or are somewhat driven by
+input files which are texts containing keywords, identifiers, or
+replies which are inherently translatable.  For example, one may want
+<code>gcc</code> to allow diacriticized characters in identifiers or use
+translated keywords; &lsquo;<samp>rm -i</samp>&rsquo; might accept something else than
+&lsquo;<samp>y</samp>&rsquo; or &lsquo;<samp>n</samp>&rsquo; for replies, etc.  Even if the program will
+eventually make most of its output in the foreign languages, one has
+to decide whether the input syntax, option values, etc., are to be
+localized or not.
+
+</li><li> The manual accompanying a package, as well as all documentation files
+in the distribution, could surely be translated, too.  Translating a
+manual, with the intent of later keeping up with updates, is a major
+undertaking in itself, generally.
+
+</li></ul>
+
+<p>As we already stressed, translation is only one aspect of locales.
+Other internationalization aspects are system services and are handled
+in GNU <code>libc</code>.  There
+are many attributes that are needed to define a country&rsquo;s cultural
+conventions.  These attributes include beside the country&rsquo;s native
+language, the formatting of the date and time, the representation of
+numbers, the symbols for currency, etc.  These local <em>rules</em> are
+termed the country&rsquo;s locale.  The locale represents the knowledge
+needed to support the country&rsquo;s native attributes.
+</p>
+<a name="index-locale-categories"></a>
+<p>There are a few major areas which may vary between countries and
+hence, define what a locale must describe.  The following list helps
+putting multi-lingual messages into the proper context of other tasks
+related to locales.  See the GNU <code>libc</code> manual for details.
+</p>
+<dl compact="compact">
+<dt><em>Characters and Codesets</em></dt>
+<dd><a name="index-codeset"></a>
+<a name="index-encoding"></a>
+<a name="index-character-encoding"></a>
+<a name="index-locale-category_002c-LC_005fCTYPE"></a>
+
+<p>The codeset most commonly used through out the USA and most English
+speaking parts of the world is the ASCII codeset.  However, there are
+many characters needed by various locales that are not found within
+this codeset.  The 8-bit ISO&nbsp;<span class="nolinebreak">8859-1</span><!-- /@w --> code set has most of the special
+characters needed to handle the major European languages.  However, in
+many cases, choosing ISO&nbsp;<span class="nolinebreak">8859-1</span><!-- /@w --> is nevertheless not adequate: it
+doesn&rsquo;t even handle the major European currency.  Hence each locale
+will need to specify which codeset they need to use and will need
+to have the appropriate character handling routines to cope with
+the codeset.
+</p>
+</dd>
+<dt><em>Currency</em></dt>
+<dd><a name="index-currency-symbols"></a>
+<a name="index-locale-category_002c-LC_005fMONETARY"></a>
+
+<p>The symbols used vary from country to country as does the position
+used by the symbol.  Software needs to be able to transparently
+display currency figures in the native mode for each locale.
+</p>
+</dd>
+<dt><em>Dates</em></dt>
+<dd><a name="index-date-format"></a>
+<a name="index-locale-category_002c-LC_005fTIME"></a>
+
+<p>The format of date varies between locales.  For example, Christmas day
+in 1994 is written as 12/25/94 in the USA and as 25/12/94 in Australia.
+Other countries might use ISO&nbsp;8601<!-- /@w --> dates, etc.
+</p>
+<p>Time of the day may be noted as <var>hh</var>:<var>mm</var>, <var>hh</var>.<var>mm</var>,
+or otherwise.  Some locales require time to be specified in 24-hour
+mode rather than as AM or PM.  Further, the nature and yearly extent
+of the Daylight Saving correction vary widely between countries.
+</p>
+</dd>
+<dt><em>Numbers</em></dt>
+<dd><a name="index-number-format"></a>
+<a name="index-locale-category_002c-LC_005fNUMERIC"></a>
+
+<p>Numbers can be represented differently in different locales.
+For example, the following numbers are all written correctly for
+their respective locales:
+</p>
+<div class="example">
+<pre class="example">12,345.67       English
+12.345,67       German
+ 12345,67       French
+1,2345.67       Asia
+</pre></div>
+
+<p>Some programs could go further and use different unit systems, like
+English units or Metric units, or even take into account variants
+about how numbers are spelled in full.
+</p>
+</dd>
+<dt><em>Messages</em></dt>
+<dd><a name="index-messages"></a>
+<a name="index-locale-category_002c-LC_005fMESSAGES"></a>
+
+<p>The most obvious area is the language support within a locale.  This is
+where GNU <code>gettext</code> provides the means for developers and users to
+easily change the language that the software uses to communicate to
+the user.
+</p>
+</dd>
+</dl>
+
+<a name="index-locale-categories-1"></a>
+<p>These areas of cultural conventions are called <em>locale categories</em>.
+It is an unfortunate term; <em>locale aspects</em> or <em>locale feature
+categories</em> would be a better term, because each &ldquo;locale category&rdquo;
+describes an area or task that requires localization.  The concrete data
+that describes the cultural conventions for such an area and for a particular
+culture is also called a <em>locale category</em>.  In this sense, a locale
+is composed of several locale categories: the locale category describing
+the codeset, the locale category describing the formatting of numbers,
+the locale category containing the translated messages, and so on.
+</p>
+<a name="index-Linux"></a>
+<p>Components of locale outside of message handling are standardized in
+the ISO C standard and the POSIX:2001 standard (also known as the SUSV3
+specification).  GNU <code>libc</code>
+fully implements this, and most other modern systems provide a more
+or less reasonable support for at least some of the missing components.
+</p>
+<hr>
+<a name="Files"></a>
+<div class="header">
+<p>
+Next: <a href="#Overview" accesskey="n" rel="next">Overview</a>, Previous: <a href="#Aspects" accesskey="p" rel="prev">Aspects</a>, Up: <a href="#Introduction" accesskey="u" rel="up">Introduction</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Files-Conveying-Translations"></a>
+<h3 class="section">1.4 Files Conveying Translations</h3>
+
+<a name="index-files_002c-_002epo-and-_002emo"></a>
+<p>The letters PO in <samp>.po</samp> files means Portable Object, to
+distinguish it from <samp>.mo</samp> files, where MO stands for Machine
+Object.  This paradigm, as well as the PO file format, is inspired
+by the NLS standard developed by Uniforum, and first implemented by
+Sun in their Solaris system.
+</p>
+<p>PO files are meant to be read and edited by humans, and associate each
+original, translatable string of a given package with its translation
+in a particular target language.  A single PO file is dedicated to
+a single target language.  If a package supports many languages,
+there is one such PO file per language supported, and each package
+has its own set of PO files.  These PO files are best created by
+the <code>xgettext</code> program, and later updated or refreshed through
+the <code>msgmerge</code> program.  Program <code>xgettext</code> extracts all
+marked messages from a set of C files and initializes a PO file with
+empty translations.  Program <code>msgmerge</code> takes care of adjusting
+PO files between releases of the corresponding sources, commenting
+obsolete entries, initializing new ones, and updating all source
+line references.  Files ending with <samp>.pot</samp> are kind of base
+translation files found in distributions, in PO file format.
+</p>
+<p>MO files are meant to be read by programs, and are binary in nature.
+A few systems already offer tools for creating and handling MO files
+as part of the Native Language Support coming with the system, but the
+format of these MO files is often different from system to system,
+and non-portable.  The tools already provided with these systems don&rsquo;t
+support all the features of GNU <code>gettext</code>.  Therefore GNU
+<code>gettext</code> uses its own format for MO files.  Files ending with
+<samp>.gmo</samp> are really MO files, when it is known that these files use
+the GNU format.
+</p>
+<hr>
+<a name="Overview"></a>
+<div class="header">
+<p>
+Previous: <a href="#Files" accesskey="p" rel="prev">Files</a>, Up: <a href="#Introduction" accesskey="u" rel="up">Introduction</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Overview-of-GNU-gettext"></a>
+<h3 class="section">1.5 Overview of GNU <code>gettext</code></h3>
+
+<a name="index-overview-of-gettext"></a>
+<a name="index-big-picture"></a>
+<a name="index-tutorial-of-gettext-usage"></a>
+<p>The following diagram summarizes the relation between the files
+handled by GNU <code>gettext</code> and the tools acting on these files.
+It is followed by somewhat detailed explanations, which you should
+read while keeping an eye on the diagram.  Having a clear understanding
+of these interrelations will surely help programmers, translators
+and maintainers.
+</p>
+<div class="example">
+<pre class="example">Original C Sources ───&gt; Preparation ───&gt; Marked C Sources ───╮
+                                                             │
+              ╭─────────&lt;─── GNU gettext Library             │
+╭─── make &lt;───┤                                              │
+│             ╰─────────&lt;────────────────────┬───────────────╯
+│                                            │
+│   ╭─────&lt;─── PACKAGE.pot &lt;─── xgettext &lt;───╯   ╭───&lt;─── PO Compendium
+│   │                                            │              ↑
+│   │                                            ╰───╮          │
+│   ╰───╮                                            ├───&gt; PO editor ───╮
+│       ├────&gt; msgmerge ──────&gt; LANG.po ────&gt;────────╯                  │
+│   ╭───╯                                                               │
+│   │                                                                   │
+│   ╰─────────────&lt;───────────────╮                                     │
+│                                 ├─── New LANG.po &lt;────────────────────╯
+│   ╭─── LANG.gmo &lt;─── msgfmt &lt;───╯
+│   │
+│   ╰───&gt; install ───&gt; /.../LANG/PACKAGE.mo ───╮
+│                                              ├───&gt; &quot;Hello world!&quot;
+╰───────&gt; install ───&gt; /.../bin/PROGRAM ───────╯
+</pre></div>
+
+<a name="index-marking-translatable-strings"></a>
+<p>As a programmer, the first step to bringing GNU <code>gettext</code>
+into your package is identifying, right in the C sources, those strings
+which are meant to be translatable, and those which are untranslatable.
+This tedious job can be done a little more comfortably using emacs PO
+mode, but you can use any means familiar to you for modifying your
+C sources.  Beside this some other simple, standard changes are needed to
+properly initialize the translation library.  See <a href="#Sources">Sources</a>, for
+more information about all this.
+</p>
+<p>For newly written software the strings of course can and should be
+marked while writing it.  The <code>gettext</code> approach makes this
+very easy.  Simply put the following lines at the beginning of each file
+or in a central header file:
+</p>
+<div class="example">
+<pre class="example">#define _(String) (String)
+#define N_(String) String
+#define textdomain(Domain)
+#define bindtextdomain(Package, Directory)
+</pre></div>
+
+<p>Doing this allows you to prepare the sources for internationalization.
+Later when you feel ready for the step to use the <code>gettext</code> library
+simply replace these definitions by the following:
+</p>
+<a name="index-include-file-libintl_002eh"></a>
+<div class="example">
+<pre class="example">#include &lt;libintl.h&gt;
+#define _(String) gettext (String)
+#define gettext_noop(String) String
+#define N_(String) gettext_noop (String)
+</pre></div>
+
+<a name="index-link-with-libintl"></a>
+<a name="index-Linux-1"></a>
+<p>and link against <samp>libintl.a</samp> or <samp>libintl.so</samp>.  Note that on
+GNU systems, you don&rsquo;t need to link with <code>libintl</code> because the
+<code>gettext</code> library functions are already contained in GNU libc.
+That is all you have to change.
+</p>
+<a name="index-template-PO-file"></a>
+<a name="index-files_002c-_002epot"></a>
+<p>Once the C sources have been modified, the <code>xgettext</code> program
+is used to find and extract all translatable strings, and create a
+PO template file out of all these.  This <samp><var>package</var>.pot</samp> file
+contains all original program strings.  It has sets of pointers to
+exactly where in C sources each string is used.  All translations
+are set to empty.  The letter <code>t</code> in <samp>.pot</samp> marks this as
+a Template PO file, not yet oriented towards any particular language.
+See <a href="#xgettext-Invocation">xgettext Invocation</a>, for more details about how one calls the
+<code>xgettext</code> program.  If you are <em>really</em> lazy, you might
+be interested at working a lot more right away, and preparing the
+whole distribution setup (see <a href="#Maintainers">Maintainers</a>).  By doing so, you
+spare yourself typing the <code>xgettext</code> command, as <code>make</code>
+should now generate the proper things automatically for you!
+</p>
+<p>The first time through, there is no <samp><var>lang</var>.po</samp> yet, so the
+<code>msgmerge</code> step may be skipped and replaced by a mere copy of
+<samp><var>package</var>.pot</samp> to <samp><var>lang</var>.po</samp>, where <var>lang</var>
+represents the target language.  See <a href="#Creating">Creating</a> for details.
+</p>
+<p>Then comes the initial translation of messages.  Translation in
+itself is a whole matter, still exclusively meant for humans,
+and whose complexity far overwhelms the level of this manual.
+Nevertheless, a few hints are given in some other chapter of this
+manual (see <a href="#Translators">Translators</a>).  You will also find there indications
+about how to contact translating teams, or becoming part of them,
+for sharing your translating concerns with others who target the same
+native language.
+</p>
+<p>While adding the translated messages into the <samp><var>lang</var>.po</samp>
+PO file, if you are not using one of the dedicated PO file editors
+(see <a href="#Editing">Editing</a>), you are on your own
+for ensuring that your efforts fully respect the PO file format, and quoting
+conventions (see <a href="#PO-Files">PO Files</a>).  This is surely not an impossible task,
+as this is the way many people have handled PO files around 1995.
+On the other hand, by using a PO file editor, most details
+of PO file format are taken care of for you, but you have to acquire
+some familiarity with PO file editor itself.
+</p>
+<p>If some common translations have already been saved into a compendium
+PO file, translators may use PO mode for initializing untranslated
+entries from the compendium, and also save selected translations into
+the compendium, updating it (see <a href="#Compendium">Compendium</a>).  Compendium files
+are meant to be exchanged between members of a given translation team.
+</p>
+<p>Programs, or packages of programs, are dynamic in nature: users write
+bug reports and suggestion for improvements, maintainers react by
+modifying programs in various ways.  The fact that a package has
+already been internationalized should not make maintainers shy
+of adding new strings, or modifying strings already translated.
+They just do their job the best they can.  For the Translation
+Project to work smoothly, it is important that maintainers do not
+carry translation concerns on their already loaded shoulders, and that
+translators be kept as free as possible of programming concerns.
+</p>
+<p>The only concern maintainers should have is carefully marking new
+strings as translatable, when they should be, and do not otherwise
+worry about them being translated, as this will come in proper time.
+Consequently, when programs and their strings are adjusted in various
+ways by maintainers, and for matters usually unrelated to translation,
+<code>xgettext</code> would construct <samp><var>package</var>.pot</samp> files which are
+evolving over time, so the translations carried by <samp><var>lang</var>.po</samp>
+are slowly fading out of date.
+</p>
+<a name="index-evolution-of-packages"></a>
+<p>It is important for translators (and even maintainers) to understand
+that package translation is a continuous process in the lifetime of a
+package, and not something which is done once and for all at the start.
+After an initial burst of translation activity for a given package,
+interventions are needed once in a while, because here and there,
+translated entries become obsolete, and new untranslated entries
+appear, needing translation.
+</p>
+<p>The <code>msgmerge</code> program has the purpose of refreshing an already
+existing <samp><var>lang</var>.po</samp> file, by comparing it with a newer
+<samp><var>package</var>.pot</samp> template file, extracted by <code>xgettext</code>
+out of recent C sources.  The refreshing operation adjusts all
+references to C source locations for strings, since these strings
+move as programs are modified.  Also, <code>msgmerge</code> comments out as
+obsolete, in <samp><var>lang</var>.po</samp>, those already translated entries
+which are no longer used in the program sources (see <a href="#Obsolete-Entries">Obsolete Entries</a>).  It finally discovers new strings and inserts them in
+the resulting PO file as untranslated entries (see <a href="#Untranslated-Entries">Untranslated Entries</a>).  See <a href="#msgmerge-Invocation">msgmerge Invocation</a>, for more information about what
+<code>msgmerge</code> really does.
+</p>
+<p>Whatever route or means taken, the goal is to obtain an updated
+<samp><var>lang</var>.po</samp> file offering translations for all strings.
+</p>
+<p>The temporal mobility, or fluidity of PO files, is an integral part of
+the translation game, and should be well understood, and accepted.
+People resisting it will have a hard time participating in the
+Translation Project, or will give a hard time to other participants!  In
+particular, maintainers should relax and include all available official
+PO files in their distributions, even if these have not recently been
+updated, without exerting pressure on the translator teams to get the
+job done.  The pressure should rather come
+from the community of users speaking a particular language, and
+maintainers should consider themselves fairly relieved of any concern
+about the adequacy of translation files.  On the other hand, translators
+should reasonably try updating the PO files they are responsible for,
+while the package is undergoing pretest, prior to an official
+distribution.
+</p>
+<p>Once the PO file is complete and dependable, the <code>msgfmt</code> program
+is used for turning the PO file into a machine-oriented format, which
+may yield efficient retrieval of translations by the programs of the
+package, whenever needed at runtime (see <a href="#MO-Files">MO Files</a>).  See <a href="#msgfmt-Invocation">msgfmt Invocation</a>, for more information about all modes of execution
+for the <code>msgfmt</code> program.
+</p>
+<p>Finally, the modified and marked C sources are compiled and linked
+with the GNU <code>gettext</code> library, usually through the operation of
+<code>make</code>, given a suitable <samp>Makefile</samp> exists for the project,
+and the resulting executable is installed somewhere users will find it.
+The MO files themselves should also be properly installed.  Given the
+appropriate environment variables are set (see <a href="#Setting-the-POSIX-Locale">Setting the POSIX Locale</a>),
+the program should localize itself automatically, whenever it executes.
+</p>
+<p>The remainder of this manual has the purpose of explaining in depth the various
+steps outlined above.
+</p>
+<hr>
+<a name="Users"></a>
+<div class="header">
+<p>
+Next: <a href="#PO-Files" accesskey="n" rel="next">PO Files</a>, Previous: <a href="#Introduction" accesskey="p" rel="prev">Introduction</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="The-User_0027s-View"></a>
+<h2 class="chapter">2 The User&rsquo;s View</h2>
+
+<p>Nowadays, when users log into a computer, they usually find that all
+their programs show messages in their native language &ndash; at least for
+users of languages with an active free software community, like French or
+German; to a lesser extent for languages with a smaller participation in
+free software and the GNU project, like Hindi and Filipino.
+</p>
+<p>How does this work?  How can the user influence the language that is used
+by the programs?  This chapter will answer it.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#System-Installation" accesskey="1">System Installation</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Questions During Operating System Installation
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Setting-the-GUI-Locale" accesskey="2">Setting the GUI Locale</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to Specify the Locale Used by GUI Programs
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Setting-the-POSIX-Locale" accesskey="3">Setting the POSIX Locale</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to Specify the Locale According to POSIX
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Installing-Localizations" accesskey="4">Installing Localizations</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to Install Additional Translations
+</td></tr>
+</table>
+
+<hr>
+<a name="System-Installation"></a>
+<div class="header">
+<p>
+Next: <a href="#Setting-the-GUI-Locale" accesskey="n" rel="next">Setting the GUI Locale</a>, Previous: <a href="#Users" accesskey="p" rel="prev">Users</a>, Up: <a href="#Users" accesskey="u" rel="up">Users</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Operating-System-Installation"></a>
+<h3 class="section">2.1 Operating System Installation</h3>
+
+<p>The default language is often already specified during operating system
+installation.  When the operating system is installed, the installer
+typically asks for the language used for the installation process and,
+separately, for the language to use in the installed system.  Some OS
+installers only ask for the language once.
+</p>
+<p>This determines the system-wide default language for all users.  But the
+installers often give the possibility to install extra localizations for
+additional languages.  For example, the localizations of KDE (the K
+Desktop Environment) and OpenOffice.org are often bundled separately,
+as one installable package per language.
+</p>
+<p>At this point it is good to consider the intended use of the machine: If
+it is a machine designated for personal use, additional localizations are
+probably not necessary.  If, however, the machine is in use in an
+organization or company that has international relationships, one can
+consider the needs of guest users.  If you have a guest from abroad, for
+a week, what could be his preferred locales?  It may be worth installing
+these additional localizations ahead of time, since they cost only a bit
+of disk space at this point.
+</p>
+<p>The system-wide default language is the locale configuration that is used
+when a new user account is created.  But the user can have his own locale
+configuration that is different from the one of the other users of the
+same machine.  He can specify it, typically after the first login, as
+described in the next section.
+</p>
+<hr>
+<a name="Setting-the-GUI-Locale"></a>
+<div class="header">
+<p>
+Next: <a href="#Setting-the-POSIX-Locale" accesskey="n" rel="next">Setting the POSIX Locale</a>, Previous: <a href="#System-Installation" accesskey="p" rel="prev">System Installation</a>, Up: <a href="#Users" accesskey="u" rel="up">Users</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Setting-the-Locale-Used-by-GUI-Programs"></a>
+<h3 class="section">2.2 Setting the Locale Used by GUI Programs</h3>
+
+<p>The immediately available programs in a user&rsquo;s desktop come from a group
+of programs called a &ldquo;desktop environment&rdquo;; it usually includes the window
+manager, a web browser, a text editor, and more.  The most common free
+desktop environments are KDE, GNOME, and Xfce.
+</p>
+<p>The locale used by GUI programs of the desktop environment can be specified
+in a configuration screen called &ldquo;control center&rdquo;, &ldquo;language settings&rdquo;
+or &ldquo;country settings&rdquo;.
+</p>
+<p>Individual GUI programs that are not part of the desktop environment can
+have their locale specified either in a settings panel, or through environment
+variables.
+</p>
+<p>For some programs, it is possible to specify the locale through environment
+variables, possibly even to a different locale than the desktop&rsquo;s locale.
+This means, instead of starting a program through a menu or from the file
+system, you can start it from the command-line, after having set some
+environment variables.  The environment variables can be those specified
+in the next section (<a href="#Setting-the-POSIX-Locale">Setting the POSIX Locale</a>); for some versions of
+KDE, however, the locale is specified through a variable <code>KDE_LANG</code>,
+rather than <code>LANG</code> or <code>LC_ALL</code>.
+</p>
+<hr>
+<a name="Setting-the-POSIX-Locale"></a>
+<div class="header">
+<p>
+Next: <a href="#Installing-Localizations" accesskey="n" rel="next">Installing Localizations</a>, Previous: <a href="#Setting-the-GUI-Locale" accesskey="p" rel="prev">Setting the GUI Locale</a>, Up: <a href="#Users" accesskey="u" rel="up">Users</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Setting-the-Locale-through-Environment-Variables"></a>
+<h3 class="section">2.3 Setting the Locale through Environment Variables</h3>
+
+<p>As a user, if your language has been installed for this package, in the
+simplest case, you only have to set the <code>LANG</code> environment variable
+to the appropriate &lsquo;<samp><var>ll</var>_<var>CC</var></samp>&rsquo; combination.  For example,
+let&rsquo;s suppose that you speak German and live in Germany.  At the shell
+prompt, merely execute 
+&lsquo;<samp>setenv&nbsp;LANG&nbsp;<span class="nolinebreak">de_DE</span></samp>&rsquo;<!-- /@w --> (in <code>csh</code>),
+&lsquo;<samp>export&nbsp;LANG;&nbsp;<span class="nolinebreak">LANG=de_DE</span></samp>&rsquo;<!-- /@w --> (in <code>sh</code>) or
+&lsquo;<samp>export&nbsp;<span class="nolinebreak">LANG=de_DE</span></samp>&rsquo;<!-- /@w --> (in <code>bash</code>).  This can be done from your
+<samp>.login</samp> or <samp>.profile</samp> file, once and for all.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top">&bull; <a href="#Locale-Names" accesskey="1">Locale Names</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How a Locale Specification Looks Like
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#Locale-Environment-Variables" accesskey="2">Locale Environment Variables</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">Which Environment Variable Specfies What
+</td></tr>
+<tr><td align="left" valign="top">&bull; <a href="#The-LANGUAGE-variable" accesskey="3">The LANGUAGE variable</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">How to Specify a Priority List of Languages
+</td></tr>
+</table>
+
+<hr>
+<a name="Locale-Names"></a>
+<div class="header">
+<p>
+Next: <a href="#Locale-Environment-Variables" accesskey="n" rel="next">Locale Environment Variables</a>, Previous: <a href="#Setting-the-POSIX-Locale" accesskey="p" rel="prev">Setting the POSIX Locale</a>, Up: <a href="#Setting-the-POSIX-Locale" accesskey="u" rel="up">Setting the POSIX Locale</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Locale-Names-1"></a>
+<h4 class="subsection">2.3.1 Locale Names</h4>
+
+<p>A locale name usually has the form &lsquo;<samp><var>ll</var>_<var>CC</var></samp>&rsquo;.  Here
+&lsquo;<samp><var>ll</var></samp>&rsquo; is an ISO&nbsp;639<!-- /@w --> two-letter language code, and
+&lsquo;<samp><var>CC</var></samp>&rsquo; is an ISO&nbsp;3166<!-- /@w --> two-letter country code.  For example,
+for German in Germany, <var>ll</var> is <code>de</code>, and <var>CC</var> is <code>DE</code>.
+You find a list of the language codes in appendix <a href="#Language-Codes">Language Codes</a> and
+a list of the country codes in appendix <a href="#Country-Codes">Country Codes</a>.
+</p>
+<p>You might think that the country code specification is redundant.  But in
+fact, some languages have dialects in different countries.  For example,
+&lsquo;<samp>de_AT</samp>&rsquo; is used for Austria, and &lsquo;<samp>pt_BR</samp>&rsquo; for Brazil.  The country
+code serves to distinguish the dialects.
+</p>
+<p>Many locale names have an extended syntax
+&lsquo;<samp><var>ll</var>_<var>CC</var>.<var>encoding</var></samp>&rsquo; that also specifies the character
+encoding.  These are in use because between 2000 and 2005, most users have
+switched to locales in UTF-8 encoding.  For example, the German locale on
+glibc systems is nowadays &lsquo;<samp>de_DE.UTF-8</samp>&rsquo;.  The older name &lsquo;<samp>de_DE</samp>&rsquo;
+still refers to the German locale as of 2000 that stores characters in
+ISO-8859-1 encoding &ndash; a text encoding that cannot even accommodate the Euro
+currency sign.
+</p>
+<p>Some locale names use &lsquo;<samp><var>ll</var>_<var>CC</var>.@<var>variant</var></samp>&rsquo; instead of
+&lsquo;<samp><var>ll</var>_<var>CC</var></samp>&rsquo;.  The &lsquo;<samp>@<var>variant</var></samp>&rsquo; can denote any kind of
+characteristics that is not already implied by the language <var>ll</var> and
+the country <var>CC</var>.  It can denote a particular monetary unit.  For example,
+on glibc systems, &lsquo;<samp>de_DE@euro</samp>&rsquo; denotes the locale that uses the Euro
+currency, in contrast to the older locale &lsquo;<samp>de_DE</samp>&rsquo; which implies the use
+of the currency before 2002.  It can also denote a dialect of the language,
+or the script used to write text (for example, &lsquo;<samp>sr_RS@latin</samp>&rsquo; uses the
+Latin script, whereas &lsquo;<samp>sr_RS</samp>&rsquo; uses the Cyrillic script to write Serbian),
+or the orthography rules, or similar.
+</p>
+<p>On other systems, some variations of this scheme are used, such as
+&lsquo;<samp><var>ll</var></samp>&rsquo;.  You can get the list of locales supported by your system
+for your language by running the command &lsquo;<samp>locale -a | grep '^<var>ll</var>'</samp>&rsquo;.
+</p>
+<p>There is also a special locale, called &lsquo;<samp>C</samp>&rsquo;.
+When it is used, it disables all localization: in this locale, all programs
+standardized by POSIX use English messages and an unspecified character
+encoding (often US-ASCII, but sometimes also ISO-8859-1 or UTF-8, depending on
+the operating system).
+</p>
+<hr>
+<a name="Locale-Environment-Variables"></a>
+<div class="header">
+<p>
+Next: <a href="#The-LANGUAGE-variable" accesskey="n" rel="next">The LANGUAGE variable</a>, Previous: <a href="#Locale-Names" accesskey="p" rel="prev">Locale Names</a>, Up: <a href="#Setting-the-POSIX-Locale" accesskey="u" rel="up">Setting the POSIX Locale</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Locale-Environment-Variables-1"></a>
+<h4 class="subsection">2.3.2 Locale Environment Variables</h4>
+<a name="index-setting-up-gettext-at-run-time"></a>
+<a name="index-selecting-message-language"></a>
+<a name="index-language-selection"></a>
+
+<p>A locale is composed of several <em>locale categories</em>, see <a href="#Aspects">Aspects</a>.
+When a program looks up locale dependent values, it does this according to
+the following environment variables, in priority order:
+</p>
+<ol>
+<li> <a name="index-LANGUAGE_002c-environment-variable"></a>
+<code>LANGUAGE</code>
+</li><li> <a name="index-LC_005fALL_002c-environment-variable"></a>
+<code>LC_ALL</code>
+</li><li> <a name="index-LC_005fCTYPE_002c-environment-variable"></a>
+<a name="index-LC_005fNUMERIC_002c-environment-variable"></a>
+<a name="index-LC_005fTIME_002c-environment-variable"></a>
+<a name="index-LC_005fCOLLATE_002c-environment-variable"></a>
+<a name="index-LC_005fMONETARY_002c-environment-variable"></a>
+<a name="index-LC_005fMESSAGES_002c-environment-variable"></a>
+<code>LC_xxx</code>, according to selected locale category:
+<code>LC_CTYPE</code>, <code>LC_NUMERIC</code>, <code>LC_TIME</code>, <code>LC_COLLATE</code>,
+<code>LC_MONETARY</code>, <code>LC_MESSAGES</code>, ...
+</li><li> <a name="index-LANG_002c-environment-variable"></a>
+<code>LANG</code>
+</li></ol>
+
+<p>Variables whose value is set but is empty are ignored in this lookup.
+</p>
+<p><code>LANG</code> is the normal environment variable for specifying a locale.
+As a user, you normally set this variable (unless some of the other variables
+have already been set by the system, in <samp>/etc/profile</samp> or similar
+initialization files).
+</p>
+<p><code>LC_CTYPE</code>, <code>LC_NUMERIC</code>, <code>LC_TIME</code>, <code>LC_COLLATE</code>,
+<code>LC_MONETARY</code>, <code>LC_MESSAGES</code>, and so on, are the environment
+variables meant to override <code>LANG</code> and affecting a single locale
+category only.  For example, assume you are a Swedish user in Spain, and you
+want your programs to handle numbers and dates according to Spanish
+conventions, and only the messages should be in Swedish.  Then you could
+create a locale named &lsquo;<samp>sv_ES</samp>&rsquo; or &lsquo;<samp>sv_ES.UTF-8</samp>&rsquo; by use of the
+<code>localedef</code> program.  But it is simpler, and achieves the same effect,
+to set the <code>LANG</code> variable to <code>es_ES.UTF-8</code> and the
+<code>LC_MESSAGES</code> variable to <code>sv_SE.UTF-8</code>; these two locales come
+already preinstalled with the operating system.
+</p>
+<p><code>LC_ALL</code> is an environment variable that overrides all of these.
+It is typically used in scripts that run particular programs.  For example,
+<code>configure</code> scripts generated by GNU autoconf use <code>LC_ALL</code> to make
+sure that the configuration tests don&rsquo;t operate in locale dependent ways.
+</p>
+<p>Some systems, unfortunately, set <code>LC_ALL</code> in <samp>/etc/profile</samp> or in
+similar initialization files.  As a user, you therefore have to unset this
+variable if you want to set <code>LANG</code> and optionally some of the other
+<code>LC_xxx</code> variables.
+</p>
+<p>The <code>LANGUAGE</code> variable is described in the next subsection.
+</p>
+<hr>
+<a name="The-LANGUAGE-variable"></a>
+<div class="header">
+<p>
+Previous: <a href="#Locale-Environment-Variables" accesskey="p" rel="prev">Locale Environment Variables</a>, Up: <a href="#Setting-the-POSIX-Locale" accesskey="u" rel="up">Setting the POSIX Locale</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Specifying-a-Priority-List-of-Languages"></a>
+<h4 class="subsection">2.3.3 Specifying a Priority List of Languages</h4>
+
+<p>Not all programs have translations for all languages.  By default, an
+English message is shown in place of a nonexistent translation.  If you
+understand other languages, you can set up a priority list of languages.
+This is done through a different environment variable, called
+<code>LANGUAGE</code>.  GNU <code>gettext</code> gives preference to <code>LANGUAGE</code>
+over <code>LC_ALL</code> and <code>LANG</code> for the purpose of message handling,
+but you still need to have <code>LANG</code> (or <code>LC_ALL</code>) set to the primary
+language; this is required by other parts of the system libraries.
+For example, some Swedish users who would rather read translations in
+German than English for when Swedish is not available, set <code>LANGUAGE</code>
+to &lsquo;<samp>sv:de</samp>&rsquo; while leaving <code>LANG</code> to &lsquo;<samp>sv_SE</samp>&rsquo;.
+</p>
+<p>Special advice for Norwegian users: The language code for Norwegian
+bokm&aring;l changed from &lsquo;<samp>no</samp>&rsquo; to &lsquo;<samp>nb</samp>&rsquo; recently (in 2003).
+During the transition period, while some message catalogs for this language
+are installed under &lsquo;<samp>nb</samp>&rsquo; and some older ones under &lsquo;<samp>no</samp>&rsquo;, it is
+recommended for Norwegian users to set <code>LANGUAGE</code> to &lsquo;<samp>nb:no</samp>&rsquo; so that
+both newer and older translations are used.
+</p>
+<p>In the <code>LANGUAGE</code> environment variable, but not in the other
+environment variables, &lsquo;<samp><var>ll</var>_<var>CC</var></samp>&rsquo; combinations can be
+abbreviated as &lsquo;<samp><var>ll</var></samp>&rsquo; to denote the language&rsquo;s main dialect.
+For example, &lsquo;<samp>de</samp>&rsquo; is equivalent to &lsquo;<samp>de_DE</samp>&rsquo; (German as spoken in
+Germany), and &lsquo;<samp>pt</samp>&rsquo; to &lsquo;<samp>pt_PT</samp>&rsquo; (Portuguese as spoken in Portugal)
+in this context.
+</p>
+<p>Note: The variable <code>LANGUAGE</code> is ignored if the locale is set to
+&lsquo;<samp>C</samp>&rsquo;.  In other words, you have to first enable localization, by setting
+<code>LANG</code> (or <code>LC_ALL</code>) to a value other than &lsquo;<samp>C</samp>&rsquo;, before you can
+use a language priority list through the <code>LANGUAGE</code> variable.
+</p>
+<hr>
+<a name="Installing-Localizations"></a>
+<div class="header">
+<p>
+Previous: <a href="#Setting-the-POSIX-Locale" accesskey="p" rel="prev">Setting the POSIX Locale</a>, Up: <a href="#Users" accesskey="u" rel="up">Users</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="Installing-Translations-for-Particular-Programs"></a>
+<h3 class="section">2.4 Installing Translations for Particular Programs</h3>
+<a name="index-Translation-Matrix"></a>
+<a name="index-available-translations"></a>
+
+<p>Languages are not equally well supported in all packages using GNU
+<code>gettext</code>, and more translations are added over time.  Usually, you
+use the translations that are shipped with the operating system
+or with particular packages that you install afterwards.  But you can also
+install newer localizations directly.  For doing this, you will need an
+understanding where each localization file is stored on the file system.
+</p>
+<a name="index-ABOUT_002dNLS-file"></a>
+<p>For programs that participate in the Translation Project, you can start
+looking for translations here:
+<a href="http://translationproject.org/team/index.html">http://translationproject.org/team/index.html</a>.
+A snapshot of this information is also found in the <samp>ABOUT-NLS</samp> file
+that is shipped with GNU gettext.
+</p>
+<p>For programs that are part of the KDE project, the starting point is:
+<a href="http://i18n.kde.org/">http://i18n.kde.org/</a>.
+</p>
+<p>For programs that are part of the GNOME project, the starting point is:
+<a href="http://www.gnome.org/i18n/">http://www.gnome.org/i18n/</a>.
+</p>
+<p>For other programs, you may check whether the program&rsquo;s source code package
+contains some <samp><var>ll</var>.po</samp> files; often they are kept together in a
+directory called <samp>po/</samp>.  Each <samp><var>ll</var>.po</samp> file contains the
+message translations for the language whose abbreviation of <var>ll</var>.
+</p>
+<hr>
+<a name="PO-Files"></a>
+<div class="header">
+<p>
+Next: <a href="#Sources" accesskey="n" rel="next">Sources</a>, Previous: <a href="#Users" accesskey="p" rel="prev">Users</a>, Up: <a href="#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#Program-Index" title="Index" rel="index">Index</a>]</p>
+</div>
+<a name="The-Format-of-PO-Files"></a>
+<h2 class="chapter">3 The Format of PO Files</h2>
+<a name="index-PO-files_0027-format"></a>
+<a name="index-file-format_002c-_002epo"></a>
+
+<p>The GNU <code>gettext</code> toolset helps programmers and translators
+at producing, updating and using translation files, mainly those
+PO files which are textual, editable files.  This chapter explains
+the format of PO files.
+</p>
+<p>A PO file is made up of many entries, each entry holding the relation
+between an original untranslated string and its corresponding
+translation.  All entries in a given PO file usually pertain
+to a single project, and all translations are expressed in a single
+target language.  One PO file <em>entry</em> has the following schematic
+structure:
+</p>
+<div class="example">
+<pre class="example"><var>white-space</var>
+#  <var>translator-comments</var>
+#. <var>extracted-comments</var>
+#: <var>reference</var>&hellip;
+#, <var>flag</var>&hellip;
+#| msgid <var>previous-untranslated-string</var>
+msgid <var>untranslated-string</var>
+msgstr <var>translated-string</var>
+</pre></div>
+
+<p>The general structure of a PO file should be well understood by
+the translator.  When using PO mode, very little has to be known
+about the format details, as PO mode takes care of them for her.
+</p>
+<p>A simple entry can look like this:
+</p>
+<div class="example">
+<pre class="example">#: lib/error.c:116
+msgid &quot;Unknown system error&quot;
+msgstr &quot;Error desconegut del sistema&quot;
+</pre></div>
+
+<a name="index-comments_002c-translator"></a>
+<a name="index-comments_002c-automatic"></a>
+<a name="index-comments_002c-extracted"></a>
+<p>Entries begin with some optional white space.  Usually, when generated
+through GNU <code>gettext</code> tools, there is exactly one blank line
+between entries.  Then comments follow, on lines all starting with the
+character <code>#</code>.  There are two kinds of comments: those which have
+some white space immediately following the <code>#</code> - the <var>translator
+comments</var> -, which comments are created and maintained exclusively by the
+translator, and those which have some non-white character just after the
+<code>#</code> - the <var>automatic comments</var> -, which comments are created and
+maintained automatically by GNU <code>gettext</code> tools.  Comment lines
+starting with <code>#.</code> contain comments given by the programmer, directed
+at the translator; these comments are called <var>extracted comments</var>
+because the <code>xgettext</code> program extracts them from the program&rsquo;s
+source code.  Comment lines starting with <code>#:</code> contain references to
+the program&rsquo;s source code.  Comment lines starting with <code>#,</code> contain
+flags; more about these below.  Comment lines starting with <code>#|</code>
+contain the previous untranslated string for which the translator gave
+a translation.
+</p>
+<p>All comments, of either kind, are optional.
+</p>
+<a name="index-msgid"></a>
+<a name="index-msgstr"></a>
+<p>After white space and comments, entries show two strings, namely
+first the untranslated string as it appears in the original program
+sources, and then, the translation of this string.  The original
+string is introduced by the keyword <code>msgid</code>, and the translation,
+by <code>msgstr</code>.  The two strings, untranslated and translated,
+are quoted in various ways in the PO file, using <code>&quot;</code>
+delimiters and <code>\</code> escapes, but the translator does not really
+have to pay attention to the precise quoting format, as PO mode fully
+takes care of quoting for her.
+</p>
+<p>The <code>msgid</code> strings, as well as automatic comments, are produced
+and managed by other GNU <code>gettext</code> tools, and PO mode does not
+provide means for the translator to alter these.  The most she can
+do is merely deleting them, and only by deleting the whole entry.
+On the other hand, the <code>msgstr</code> string, as well as translator
+comments, are really meant for the translator, and PO mode gives her
+the full control she needs.
+</p>
+<p>The comment lines beginning with <code>#,</code> are special because they are
+not completely ignored by the programs as comments generally are.  The
+comma separated list of <var>flag</var>s is used by the <code>msgfmt</code>
+program to give the user some better diagnostic messages.  Currently
+there are two forms of flags defined:
+</p>
+<dl compact="compact">
+<dt><code>fuzzy</code></dt>
+<dd><a name="index-fuzzy-flag"></a>
+<p>This flag can be generated by the <code>msgmerge</code> program or it can be
+inserted by the translator herself.  It shows that the <code>msgstr</code>
+string might not be a correct translation (anymore).  Only the translator
+can judge if the translation requires further modification, or is
+acceptable as is.  Once satisfied with the translation, she then removes
+this <code>fuzzy</code> attribute.  The <code>msgmerge</code> program inserts this
+when it combined the <code>msgid</code> and <code>msgstr</code> entries after fuzzy
+search only.  See <a href="#Fuzzy-Entries">Fuzzy Entries</a>.
+</p>
+</dd>
+<dt><code>c-format</code></dt>
+<dd><a name="index-c_002dformat-flag"></a>
+</dd>
+<dt><code>no-c-format</code></dt>
+<dd><a name="index-no_002dc_002dformat-flag"></a>
+<p>These flags should not be added by a human.  Instead only the
+<code>xgettext</code> program adds them.  In an automated PO file processing
+system as proposed here, the user&rsquo;s changes would be thrown away again as
+soon as the <code>xgettext</code> program generates a new template file.
+</p>
+<p>The <code>c-format</code> flag indicates that the untranslated string and the
+translation are supposed to be C format strings.  The <code>no-c-format</code>
+flag indicates that they are not C format strings, even though the untranslated
+string happens to look like a C format string (with &lsquo;<samp>%</samp>&rsquo; directives).
+</p>
+<p>When the <code>c-format</code> flag is given for a string the <code>msgfmt</code>
+program does some more tests to check the validity of the translation.
+See <a href="#msgfmt-Invocation">msgfmt Invocation</a>, <a href="#c_002dformat-Flag">c-format Flag</a> and <a href="#c_002dformat">c-format</a>.
+</p>
+</dd>
+<dt><code>objc-format</code></dt>
+<dd><a name="index-objc_002dformat-flag"></a>
+</dd>
+<dt><code>no-objc-format</code></dt>
+<dd><a name="index-no_002dobjc_002dformat-flag"></a>
+<p>Likewise for Objective C, see <a href="#objc_002dformat">objc-format</a>.
+</p>
+</dd>
+<dt><code>sh-format</code></dt>
+<dd><a name="index-sh_002dformat-flag"></a>
+</dd>
+<dt><code>no-sh-format</code></dt>
+<dd><a name="index-no_002dsh_002dformat-flag"></a>
+<p>Likewise for Shell, see <a href="#sh_002dformat">sh-format</a>.
+</p>
+</dd>
+<dt><code>python-format</code></dt>
+<dd><a name="index-python_002dformat-flag"></a>
+</dd>
+<dt><code>no-python-format</code></dt>
+<dd><a name="index-no_002dpython_002dformat-flag"></a>
+<p>Likewise for Python, see <a href="#python_002dformat">python-format</a>.
+</p>
+</dd>
+<dt><code>python-brace-format</code></dt>
+<dd><a name="index-python_002dbrace_002dformat-flag"></a>
+</dd>
+<dt><code>no-python-brace-format</code></dt>
+<dd><a name="index-no_002dpython_002dbrace_002dformat-flag"></a>
+<p>Likewise for Python brace, see <a href="#python_002dformat">python-format</a>.
+</p>
+</dd>
+<dt><code>lisp-format</code></dt>
+<dd><a name="index-lisp_002dformat-flag"></a>
+</dd>
+<dt><code>no-lisp-format</code></dt>
+<dd><a name="index-no_002dlisp_002dformat-flag"></a>
+<p>Likewise for Lisp, see <a href="#lisp_002dformat">lisp-format</a>.
+</p>
+</dd>
+<dt><code>elisp-format</code></dt>
+<dd><a name="index-elisp_002dformat-flag"></a>
+</dd>
+<dt><code>no-elisp-format</code></dt>
+<dd><a name="index-no_002delisp_002dformat-flag"></a>
+<p>Likewise for Emacs Lisp, see <a href="#elisp_002dformat">elisp-format</a>.
+</p>
+</dd>
+<dt><code>librep-format</code></dt>
+<dd><a name="index-librep_002dformat-flag"></a>
+</dd>
+<dt><code>no-librep-format</code></dt>
+<dd><a name="index-no_002dlibrep_002dformat-flag"></a>
+<p>Likewise for librep, see <a href="#librep_002dformat">librep-format</a>.
+</p>
+</dd>
+<dt><code>scheme-format</code></dt>
+<dd><a name="index-scheme_002dformat-flag"></a>
+</dd>
+<dt><code>no-scheme-format</code></dt>
+<dd><a name="index-no_002dscheme_002dformat-flag"></a>
+<p>Likewise for Scheme, see <a href="#scheme_002dformat">scheme-format</a>.
+</p>
+</dd>
+<dt><code>smalltalk-format</code></dt>
+<dd><a name="index-smalltalk_002dformat-flag"></a>
+</dd>
+<dt><code>no-smalltalk-format</code></dt>
+<dd><a name="index-no_002dsmalltalk_002dformat-flag"></a>
+<p>Likewise for Smalltalk, see <a href="#smalltalk_002dformat">smalltalk-format</a>.
+</p>
+</dd>
+<dt><code>java-format</code></dt>
+<dd><a name="index-java_002dformat-flag"></a>
+</dd>
+<dt><code>no-java-format</code></dt>
+<dd><a name="index-no_002djava_002dformat-flag"></a>
+<p>Likewise for Java, see <a href="#java_002dformat">java-format</a>.
+</p>
+</dd>
+<dt><code>csharp-format</code></dt>
+<dd><a name="index-csharp_002dformat-flag"></a>
+</dd>
+<dt><code>no-csharp-format</code></dt>
+<dd><a name="index-no_002dcsharp_002dformat-flag"></a>
+<p>Likewise for C#, see <a href="#csharp_002dformat">csharp-format</a>.
+</p>
+</dd>
+<dt><code>awk-format</code></dt>
+<dd><a name="index-awk_002dformat-flag"></a>
+</dd>
+<dt><code>no-awk-format</code></dt>
+<dd><a name="index-no_002dawk_002dformat-flag"></a>
+<p>Likewise for awk, see <a href="#awk_002dformat">awk-format</a>.
+</p>
+</dd>
+<dt><code>object-pascal-format</code></dt>
+<dd><a name="index-object_002dpascal_002dformat-flag"></a>
+</dd>
+<dt><code>no-object-pascal-format</code></dt>
+<dd><a name="index-no_002dobject_002dpascal_002dformat-flag"></a>
+<p>Likewise for Object Pascal, see <a href="#object_002dpascal_002dformat">object-pascal-format</a>.
+</p>
+</dd>
+<dt><code>ycp-format</code></dt>
+<dd><a name="index-ycp_002dformat-flag"></a>
+</dd>
+<dt><code>no-ycp-format</code></dt>
+<dd><a name="index-no_002dycp_002dformat-flag"></a>
+<p>Likewise for YCP, see <a href="#ycp_002dformat">ycp-format</a>.
+</p>
+</dd>
+<dt><code>tcl-format</code></dt>
+<dd><a name="index-tcl_002dformat-flag"></a>
+</dd>
+<dt><code>no-tcl-format</code></dt>
+<dd><a name="index-no_002dtcl_002dformat-flag"></a>
+<p>Likewise for Tcl, see <a href="#tcl_002dformat">tcl-format</a>.
+</p>
+</dd>
+<dt><code>perl-format</code></dt>
+<dd><a name="index-perl_002dformat-flag"></a>
+</dd>
+<dt><code>no-perl-format</code></dt>
+<dd><a name="index-no_002dperl_002dformat-flag"></a>
+<p>Likewise for Perl, see <a href="#perl_002dformat">perl-format</a>.
+</p>
+</dd>
+<dt><code>perl-brace-format</code></dt>
+<dd><a name="index-perl_002dbrace_002dformat-flag"></a>
+</dd>
+<dt><code>no-perl-brace-format</code></dt>
+<dd><a name="index-no_002dperl_002dbrace_002dformat-flag"></a>
+<p>Likewise for Perl brace, see <a href="#perl_002dformat">perl-format</a>.
+</p>
+</dd>
+<dt><code>php-format</code></dt>
+<dd><a name="index-php_002dformat-flag"></a>
+</dd>
+<dt><code>no-php-format</code></dt>
+<dd><a name="index-no_002dphp_002dformat-flag"></a>
+<p>Likewise for PHP, see <a href="#php_002dformat">php-format</a>.
+</p>
+</dd>
+<dt><code>gcc-internal-format</code></dt>
+<dd><a name="index-gcc_002dinternal_002dformat-flag"></a>
+</dd>
+<dt><code>no-gcc-internal-format</code></dt>
+<dd><a name="index-no_002dgcc_002dinternal_002dformat-flag"></a>
+<p>Likewise for the GCC sources, see <a href="#gcc_002dinternal_002dformat">gcc-internal-format</a>.
+</p>
+</dd>
+<dt><code>gfc-internal-format</code></dt>
+<dd><a name="index-gfc_002dinternal_002dformat-flag"></a>
+</dd>
+<dt><code>no-gfc-internal-format</code></dt>
+<dd><a name="index-no_002dgfc_002dinternal_002dformat-flag"></a>
+<p>Likewise for the GNU Fortran Compiler sources, see <a href="#gfc_002dinternal_002dformat">gfc-internal-format</a>.
+</p>
+</dd>
+<dt><code>qt-format</code></dt>
+<dd><a name="index-qt_002dformat-flag"></a>
+</dd>
+<dt><code>no-qt-format</code></dt>
+<dd><a name="index-no_002dqt_002dformat-flag"></a>
+<p>Likewise for Qt, see <a href="#qt_002dformat">qt-format</a>.
+</p>
+</dd>
+<dt><code>qt-plural-format</code></dt>
+<dd><a name="index-qt_002dplural_002dformat-flag"></a>
+</dd>
+<dt><code>no-qt-plural-format</code></dt>
+<dd><a name="index-no_002dqt_002dplural_002dformat-flag"></a>
+<p>Likewise for Qt plural forms, see <a href="#qt_002dplural_002dformat">qt-plural-format</a>.
+</p>
+</dd>
+<dt><code>kde-format</code></dt>
+<dd><a name="index-kde_002dformat-flag"></a>
+</dd>
+<dt><code>no-kde-format</code></dt>
+<dd><a name="index-no_002dkde_002dformat-flag"></a>
+<p>Likewise for KDE, see <a href="#kde_002dformat">kde-format</a>.
+</p>
+</dd>
+<dt><code>boost-format</code></dt>
+<dd><a name="index-boost_002dformat-flag"></a>
+</dd>
+<dt><code>no-boost-format</code></dt>
+<dd><a name="index-no_002dboost_002dformat-flag"></a>
+<p>Likewise for Boost, see <a href="#boost_002dformat">boost-format</a>.
+</p>
+</dd>
+<dt><code>lua-format</code></dt>
+<dd><a name="index-lua_002dformat-flag"></a>
+</dd>
+<dt><code>no-lua-format</code></dt>
+<dd><a name="index-no_002dlua_002dformat-flag"></a>
+<p>Likewise for Lua, see <a href="#lua_002dformat">lua-format</a>.
+</p>
+</dd>
+<dt><code>javascript-format</code></dt>
+<dd><a name="index-javascript_002dformat-flag"></a>
+</dd>
+<dt><code>no-javascript-format</code></dt>
+<dd><a name="index-no_002djavascript_002dformat-flag"></a>
+<p>Likewise for JavaScript, see <a href="#javascript_002dformat">javascript-format</a>.
+</p>
+</dd>
+</dl>
+
+<a name="index-msgctxt"></a>
+<a name="index-context_002c-in-PO-files"></a>
+<p>It is also possible to have entries with a context specifier. They look like
+this:
+</p>
+<div class="example">
+<pre class="example"><var>white-space</var>
+#  <var>translator-comments</var>
+#. <var>extracted-comments</var>
+#: <var>reference</var>&hellip;
+#, <var>flag</var>&hellip;
+#| msgctxt <var>previous-context</var>
+#| msgid <var>previous-untranslated-string</var>
+msgctxt <var>context</var>
+msgid <var>untranslated-string</var>
+msgstr <var>translated-string</var>
+</pre></div>
+
+<p>The context serves to disambiguate messages with the same
+<var>untranslated-string</var>.  It is possible to have several entries with
+the same <var>untranslated-string</var> in a PO file, provided that they each
+have a different <var>context</var>.  Note that an empty <var>context</var> string
+and an absent <code>msgctxt</code> line do not mean the same thing.
+</p>
+<a name="index-msgid_005fplural"></a>
+<a name="index-plural-forms_002c-in-PO-files"></a>
+<p>A different kind of entries is used for translations which involve
+plural forms.
+</p>
+<div class="example">
+<pre class="example"><var>white-space</var>
+#  <var>translator-comments</var>
+#. <var>extracted-comments</var>
+#: <var>reference</var>&hellip;
+#, <var>flag</var>&hellip;
+#| msgid <var>previous-untranslated-string-singular</var>
+#| msgid_plural <var>previous-untranslated-string-plural</var>
+msgid <var>untranslated-string-singular</var>
+msgid_plural <var>untranslated-string-plural</var>
+msgstr[0] <var>translated-string-case-0</var>
+...
+msgstr[N] <var>translated-string-case-n</var>
+</pre></div>
+
+<p>Such an entry can look like this:
+</p>
+<div class="example">
+<pre class="example">#: src/msgcmp.c:338 src/po-lex.c:699
+#, c-format
+msgid &quot;found %d fatal error&quot;
+msgid_plural &quot;found %d fatal errors&quot;
+msgstr[0] &quot;s'ha trobat %d error fatal&quot;
+msgstr[1] &quot;s'han trobat %d errors fatals&quot;
+</pre></div>
+
+<p>Here also, a <code>msgctxt</code> context can be specified before <code>msgid</code>,
+like above.
+</p>
+<p>Here, additional kinds of flags can be used:
+</p>
+<dl compact="compact">
+<dt><code>range:</code></dt>
+<dd><a name="index-range_003a-flag"></a>
+<p>This flag is followed by a range of non-negative numbers, using the syntax
+<code>range: <var>minimum-value</var>..<var>maximum-value</var></code>.  It designates the
+possible values that the numeric parameter of the message can take.  In some
+languages, translators may produce slightly better translations if they know
+that the value can only take on values between 0 and 10, for example.
+</p></dd>
+</dl>
+
+<p>The <var>previous-untranslated-string</var> is optionally inserted by the
+<code>msgmerge</code> program, at the same time when it marks a message fuzzy.
+It helps the translator to see which changes were done by the developers
+on the <var>untranslated-string</var>.
+</p>
+<p>It happens that some lines, usually whitespace or comments, follow the
+very last entry of a PO file.  Such lines are not part of any entry,
+and will be dropped when the PO file is processed by the tools, or may
+disturb some PO file editors.
+</p>
+<p>The remainder of this section may be safely skipped by those using
+a PO file editor, yet it may be interesting for everybody to have a better
+idea of the precise format of a PO file.  On the other hand, those
+wishing to modify PO file

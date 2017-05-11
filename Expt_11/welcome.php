@@ -14,7 +14,7 @@ theme.min.css" >
 </head>
 <body>
 <h1>Welcome <?php echo $_SESSION['username']; ?></h1>
-Login Successful
+<h1>Login Successful</h1>
 <a class="btn btn-lg btn-primary btn-block" href="logout.php">Logout</a>
 </body>
 </html>
